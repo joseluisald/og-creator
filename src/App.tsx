@@ -4,19 +4,35 @@
  */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Layers, Sparkles, Type, Download, RefreshCw, Eye, Check, Copy, Image as ImageIcon } from 'lucide-react';
+import {
+  Layers,
+  Sparkles,
+  Type,
+  Download,
+  RefreshCw,
+  Eye,
+  Check,
+  Copy,
+  Image as ImageIcon,
+  ShieldCheck,
+  Code2,
+} from 'lucide-react';
 import { Header } from './components/Header';
+import { LoginScreen } from './components/LoginScreen';
 import { CanvasStage } from './components/CanvasStage';
 import { BackgroundControls } from './components/BackgroundControls';
 import { KeyVisualControls } from './components/KeyVisualControls';
 import { OverlayControls } from './components/OverlayControls';
+import { WatermarkControls } from './components/WatermarkControls';
 import { SocialPreviewModal } from './components/SocialPreviewModal';
+import { MetaTagsModal } from './components/MetaTagsModal';
 import { TemplatesModal } from './components/TemplatesModal';
-import { BgConfig, KvConfig, TextOverlayConfig, PresetTemplate } from './types';
+import { BgConfig, KvConfig, PresetTemplate, TextOverlayConfig, WatermarkConfig } from './types';
 import {
   INITIAL_BG_CONFIG,
   INITIAL_KV_CONFIG,
   INITIAL_TEXT_OVERLAY,
+  INITIAL_WATERMARK_CONFIG,
 } from './data/presets';
 import {
   renderOgImage,
@@ -27,19 +43,39 @@ import {
 } from './utils/canvasRenderer';
 
 export default function App() {
+  const [authUser, setAuthUser] = useState<string | null>(() => {
+    try {
+      const stored = localStorage.getItem('og_auth_user');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return parsed?.email || null;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  });
+
   const [bgConfig, setBgConfig] = useState<BgConfig>(INITIAL_BG_CONFIG);
   const [kvConfig, setKvConfig] = useState<KvConfig>(INITIAL_KV_CONFIG);
   const [textOverlay, setTextOverlay] = useState<TextOverlayConfig>(INITIAL_TEXT_OVERLAY);
+  const [watermarkConfig, setWatermarkConfig] = useState<WatermarkConfig>(INITIAL_WATERMARK_CONFIG);
   const [showGuides, setShowGuides] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'bg' | 'kv' | 'overlay'>('bg');
+  const [activeTab, setActiveTab] = useState<'bg' | 'kv' | 'overlay' | 'watermark'>('bg');
   const [copied, setCopied] = useState<boolean>(false);
   const [isSocialPreviewOpen, setIsSocialPreviewOpen] = useState<boolean>(false);
+  const [isMetaTagsOpen, setIsMetaTagsOpen] = useState<boolean>(false);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState<boolean>(false);
   const [canvasDataUrl, setCanvasDataUrl] = useState<string>('');
   const [isRendering, setIsRendering] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem('og_auth_user');
+    setAuthUser(null);
+  };
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
@@ -58,7 +94,7 @@ export default function App() {
         bgConfig,
         kvConfig,
         textOverlay,
-        { showSafeGuides: showGuides }
+        { showSafeGuides: showGuides, watermark: watermarkConfig }
       );
       // Cache data url for social preview modal
       if (canvasRef.current) {
@@ -69,7 +105,7 @@ export default function App() {
     } finally {
       setIsRendering(false);
     }
-  }, [bgConfig, kvConfig, textOverlay, showGuides]);
+  }, [bgConfig, kvConfig, textOverlay, watermarkConfig, showGuides]);
 
   useEffect(() => {
     triggerRender();
@@ -96,6 +132,14 @@ export default function App() {
                     imageFileName: 'clipboard-kv.png',
                   }));
                   triggerToast('Imagem colada no Key Visual (KV)!');
+                } else if (activeTab === 'watermark') {
+                  setWatermarkConfig((prev) => ({
+                    ...prev,
+                    enabled: true,
+                    imageUrl: imgData,
+                    imageFileName: 'clipboard-logo.png',
+                  }));
+                  triggerToast('Logo/Selo colado na Marca d’Água!');
                 } else {
                   setBgConfig((prev) => ({
                     ...prev,
@@ -130,6 +174,35 @@ export default function App() {
     setTextOverlay((prev) => ({ ...prev, ...updated }));
   };
 
+  const handleSelectTemplate = (tmpl: PresetTemplate) => {
+    setBgConfig(tmpl.bgConfig);
+    setKvConfig(tmpl.kvConfig);
+    if (tmpl.textOverlay) {
+      setTextOverlay((prev) => ({ ...prev, ...tmpl.textOverlay }));
+    }
+    triggerToast(`Modelo "${tmpl.name}" carregado!`);
+  };
+
+  const handleWatermarkChange = (updated: Partial<WatermarkConfig>) => {
+    setWatermarkConfig((prev) => ({ ...prev, ...updated }));
+  };
+
+  const handleWatermarkFileUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (event.target?.result) {
+        setWatermarkConfig((prev) => ({
+          ...prev,
+          enabled: true,
+          imageUrl: event.target?.result as string,
+          imageFileName: file.name,
+        }));
+        triggerToast(`Logo "${file.name}" carregado com sucesso!`);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleResetBg = () => {
     setBgConfig(INITIAL_BG_CONFIG);
     triggerToast('Background restaurado para o padrão.');
@@ -147,6 +220,7 @@ export default function App() {
     // Temporarily render without guides for clean export
     await renderOgImage(canvasRef.current, bgConfig, kvConfig, textOverlay, {
       showSafeGuides: false,
+      watermark: watermarkConfig,
     });
 
     try {
@@ -178,6 +252,7 @@ export default function App() {
     // Temporarily render clean without guides for copy
     await renderOgImage(canvasRef.current, bgConfig, kvConfig, textOverlay, {
       showSafeGuides: false,
+      watermark: watermarkConfig,
     });
 
     const success = await copyCanvasToClipboard(canvasRef.current);
@@ -194,19 +269,9 @@ export default function App() {
     }
   };
 
-  // Select Template Handler
-  const handleSelectTemplate = (template: PresetTemplate) => {
-    if (template.bgConfig) {
-      setBgConfig((prev) => ({ ...prev, ...template.bgConfig }));
-    }
-    if (template.kvConfig) {
-      setKvConfig((prev) => ({ ...prev, ...template.kvConfig }));
-    }
-    if (template.textOverlay) {
-      setTextOverlay((prev) => ({ ...prev, ...template.textOverlay }));
-    }
-    triggerToast(`Modelo "${template.name}" aplicado!`);
-  };
+  if (!authUser) {
+    return <LoginScreen onLoginSuccess={(email) => setAuthUser(email)} />;
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#e5e5e5] flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
@@ -228,6 +293,9 @@ export default function App() {
         onOpenTemplates={() => setIsTemplatesOpen(true)}
         onToggleSocialPreview={() => setIsSocialPreviewOpen(true)}
         isSocialPreviewOpen={isSocialPreviewOpen}
+        onOpenMetaTags={() => setIsMetaTagsOpen(true)}
+        userEmail={authUser}
+        onLogout={handleLogout}
       />
 
       {/* Main Workspace Layout */}
@@ -235,44 +303,57 @@ export default function App() {
         {/* Left Side: Controls & Uploads Panel */}
         <aside className="w-full lg:w-[420px] xl:w-[460px] border-r border-[#ffffff10] bg-[#0f1115]/90 flex flex-col h-auto lg:h-[calc(100vh-65px)] overflow-y-auto">
           {/* Navigation Tabs */}
-          <div className="flex border-b border-[#ffffff10] bg-[#0a0a0a]/90 sticky top-0 z-20 backdrop-blur-md">
+          <div className="grid grid-cols-4 border-b border-[#ffffff10] bg-[#0a0a0a]/90 sticky top-0 z-20 backdrop-blur-md">
             <button
               type="button"
               onClick={() => setActiveTab('bg')}
-              className={`flex-1 py-3.5 px-2 text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 border-b-2 transition cursor-pointer ${
+              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
                 activeTab === 'bg'
                   ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
                   : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
               }`}
             >
               <ImageIcon className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span>1. Background</span>
+              <span className="truncate">1. Fundo</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('kv')}
-              className={`flex-1 py-3.5 px-2 text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 border-b-2 transition cursor-pointer ${
+              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
                 activeTab === 'kv'
                   ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
                   : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span>2. Key Visual</span>
+              <span className="truncate">2. Visual</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('overlay')}
-              className={`flex-1 py-3.5 px-2 text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 border-b-2 transition cursor-pointer ${
+              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
                 activeTab === 'overlay'
                   ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
                   : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
               }`}
             >
               <Type className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span>3. Textos</span>
+              <span className="truncate">3. Textos</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('watermark')}
+              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
+                activeTab === 'watermark'
+                  ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
+                  : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#d4af37]" />
+              <span className="truncate">4. Selo/Logo</span>
             </button>
           </div>
 
@@ -298,6 +379,14 @@ export default function App() {
               <OverlayControls
                 config={textOverlay}
                 onChange={handleOverlayChange}
+              />
+            )}
+
+            {activeTab === 'watermark' && (
+              <WatermarkControls
+                config={watermarkConfig}
+                onChange={handleWatermarkChange}
+                onFileUpload={handleWatermarkFileUpload}
               />
             )}
           </div>
@@ -326,7 +415,15 @@ export default function App() {
         subtitle={textOverlay.subtitleText || 'Sua descrição aqui'}
       />
 
-      {/* Templates Modal */}
+      {/* Meta Tags Generator Modal */}
+      <MetaTagsModal
+        isOpen={isMetaTagsOpen}
+        onClose={() => setIsMetaTagsOpen(false)}
+        defaultTitle={textOverlay.titleText || 'Título do Projeto'}
+        defaultSubtitle={textOverlay.subtitleText || 'Sua descrição aqui'}
+      />
+
+      {/* Preset Templates Modal */}
       <TemplatesModal
         isOpen={isTemplatesOpen}
         onClose={() => setIsTemplatesOpen(false)}
@@ -335,3 +432,4 @@ export default function App() {
     </div>
   );
 }
+

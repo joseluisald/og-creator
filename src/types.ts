@@ -59,6 +59,28 @@ export interface TextOverlayConfig {
   subtitleColor: string;
 }
 
+export type WatermarkPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right'
+  | 'center';
+
+export interface WatermarkConfig {
+  enabled: boolean;
+  imageUrl: string | null;
+  imageFileName?: string;
+  position: WatermarkPosition;
+  scalePercent: number; // 5 to 50%
+  opacity: number; // 0 to 100
+  margin: number; // 10 to 120
+  rotation: number; // -45 to 45 deg
+  filterMode: 'original' | 'grayscale' | 'white' | 'black';
+  backgroundStyle: 'none' | 'glass' | 'dark-pill' | 'light-pill';
+}
+
 export interface PresetTemplate {
   id: string;
   name: string;

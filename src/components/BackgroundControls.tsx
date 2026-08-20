@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Upload, Image as ImageIcon, Sparkles, RefreshCw, Sliders, Palette, Layers } from 'lucide-react';
+import { Upload, Image as ImageIcon, RefreshCw, Sliders, Palette, Layers, Sparkles } from 'lucide-react';
 import { BgConfig, BgFitMode } from '../types';
 import { PRESET_BACKGROUNDS } from '../data/presets';
 

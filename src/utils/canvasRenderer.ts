@@ -1,4 +1,4 @@
-import { BgConfig, KvConfig, TextOverlayConfig } from '../types';
+import { BgConfig, KvConfig, TextOverlayConfig, WatermarkConfig } from '../types';
 
 export const CANVAS_WIDTH = 1200;
 export const CANVAS_HEIGHT = 630;
@@ -33,7 +33,7 @@ export async function renderOgImage(
   bgConfig: BgConfig,
   kvConfig: KvConfig,
   textOverlay?: TextOverlayConfig,
-  options?: { showSafeGuides?: boolean }
+  options?: { showSafeGuides?: boolean; watermark?: WatermarkConfig }
 ): Promise<void> {
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) return;
@@ -57,7 +57,12 @@ export async function renderOgImage(
     renderTextOverlays(ctx, textOverlay, kvConfig);
   }
 
-  // 4. OPTIONAL SAFE GUIDES (FOR EDITING VIEW ONLY)
+  // 4. RENDER WATERMARK / BRANDING LOGO (IF ENABLED)
+  if (options?.watermark?.enabled && options?.watermark?.imageUrl) {
+    await renderWatermark(ctx, options.watermark);
+  }
+
+  // 5. OPTIONAL SAFE GUIDES (FOR EDITING VIEW ONLY)
   if (options?.showSafeGuides) {
     renderSafeGuides(ctx);
   }
@@ -406,6 +411,124 @@ function renderTextOverlays(
   }
 
   ctx.restore();
+}
+
+async function renderWatermark(
+  ctx: CanvasRenderingContext2D,
+  wm: WatermarkConfig
+): Promise<void> {
+  if (!wm.enabled || !wm.imageUrl) return;
+
+  try {
+    const img = await loadImage(wm.imageUrl);
+    const imgW = img.naturalWidth || img.width;
+    const imgH = img.naturalHeight || img.height;
+    if (!imgW || !imgH) return;
+
+    // Calculate dimensions based on scale (scalePercent from 5% to 50% relative to canvas width)
+    const baseTargetW = CANVAS_WIDTH * (wm.scalePercent / 100);
+    const aspect = imgW / imgH;
+    const drawW = baseTargetW;
+    const drawH = drawW / aspect;
+
+    // Margin from boundaries
+    const margin = wm.margin ?? 40;
+
+    let targetX = margin;
+    let targetY = margin;
+
+    switch (wm.position) {
+      case 'top-left':
+        targetX = margin;
+        targetY = margin;
+        break;
+      case 'top-center':
+        targetX = (CANVAS_WIDTH - drawW) / 2;
+        targetY = margin;
+        break;
+      case 'top-right':
+        targetX = CANVAS_WIDTH - drawW - margin;
+        targetY = margin;
+        break;
+      case 'bottom-left':
+        targetX = margin;
+        targetY = CANVAS_HEIGHT - drawH - margin;
+        break;
+      case 'bottom-center':
+        targetX = (CANVAS_WIDTH - drawW) / 2;
+        targetY = CANVAS_HEIGHT - drawH - margin;
+        break;
+      case 'bottom-right':
+        targetX = CANVAS_WIDTH - drawW - margin;
+        targetY = CANVAS_HEIGHT - drawH - margin;
+        break;
+      case 'center':
+        targetX = (CANVAS_WIDTH - drawW) / 2;
+        targetY = (CANVAS_HEIGHT - drawH) / 2;
+        break;
+    }
+
+    ctx.save();
+    ctx.globalAlpha = Math.min(Math.max((wm.opacity ?? 90) / 100, 0), 1);
+
+    // Center point for rotation and drawing
+    const centerX = targetX + drawW / 2;
+    const centerY = targetY + drawH / 2;
+
+    ctx.translate(centerX, centerY);
+    if (wm.rotation) {
+      ctx.rotate((wm.rotation * Math.PI) / 180);
+    }
+
+    // Render background pill if configured
+    const pad = 12;
+    if (wm.backgroundStyle === 'glass') {
+      ctx.save();
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+      ctx.shadowBlur = 16;
+      drawRoundedRect(ctx, -drawW / 2 - pad, -drawH / 2 - pad, drawW + pad * 2, drawH + pad * 2, 16);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+    } else if (wm.backgroundStyle === 'dark-pill') {
+      ctx.save();
+      ctx.fillStyle = '#0f1115';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.shadowBlur = 12;
+      drawRoundedRect(ctx, -drawW / 2 - pad, -drawH / 2 - pad, drawW + pad * 2, drawH + pad * 2, 16);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff15';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+    } else if (wm.backgroundStyle === 'light-pill') {
+      ctx.save();
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+      ctx.shadowBlur = 12;
+      drawRoundedRect(ctx, -drawW / 2 - pad, -drawH / 2 - pad, drawW + pad * 2, drawH + pad * 2, 16);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Apply color filters
+    if (wm.filterMode === 'grayscale') {
+      ctx.filter = 'grayscale(100%)';
+    } else if (wm.filterMode === 'white') {
+      ctx.filter = 'brightness(0) invert(1)';
+    } else if (wm.filterMode === 'black') {
+      ctx.filter = 'brightness(0)';
+    }
+
+    ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+
+    ctx.restore();
+  } catch (err) {
+    console.error('Failed to render watermark:', err);
+  }
 }
 
 function renderSafeGuides(ctx: CanvasRenderingContext2D): void {

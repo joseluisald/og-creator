@@ -1,4 +1,4 @@
-import { BgConfig, KvConfig, PresetTemplate, TextOverlayConfig } from '../types';
+import { BgConfig, KvConfig, PresetTemplate, TextOverlayConfig, WatermarkConfig } from '../types';
 
 // Procedural SVG Backgrounds as Data URIs for Instant Loading
 export const PRESET_BACKGROUNDS = [
@@ -370,6 +370,79 @@ export const INITIAL_TEXT_OVERLAY: TextOverlayConfig = {
   titlePosition: 'below-kv',
   subtitleText: 'A sua solução moderna para a web',
   subtitleColor: '#cbd5e1',
+};
+
+// Sample Watermark/Brand SVGs
+export const PRESET_WATERMARKS = [
+  {
+    id: 'seal-verified',
+    name: 'Selo Oficial de Autenticidade',
+    previewUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f9e79f"/>
+            <stop offset="50%" stop-color="#d4af37"/>
+            <stop offset="100%" stop-color="#996515"/>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="90" fill="#0f1115" stroke="url(#gold)" stroke-width="6"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="url(#gold)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <path d="M100 35 L108 55 L130 55 L112 68 L118 88 L100 76 L82 88 L88 68 L70 55 L92 55 Z" fill="url(#gold)"/>
+        <text x="100" y="125" text-anchor="middle" fill="#f9e79f" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" letter-spacing="3">VERIFICADO</text>
+        <text x="100" y="145" text-anchor="middle" fill="#d4af37" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="10" letter-spacing="2">100% ORIGINAL</text>
+      </svg>
+    `)
+  },
+  {
+    id: 'brand-minimal-badge',
+    name: 'Logo Minimalista Monocromático',
+    previewUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
+        <defs>
+          <linearGradient id="brandGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f9e79f"/>
+            <stop offset="100%" stop-color="#d4af37"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="236" height="76" rx="38" fill="#0f1115" stroke="url(#brandGold)" stroke-width="2"/>
+        <circle cx="42" cy="40" r="22" fill="url(#brandGold)"/>
+        <polygon points="42,26 48,37 60,37 50,44 54,55 42,48 30,55 34,44 24,37 36,37" fill="#0f1115"/>
+        <text x="80" y="47" fill="#ffffff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="22" letter-spacing="2">STUDIO</text>
+      </svg>
+    `)
+  },
+  {
+    id: 'tech-cloud-logo',
+    name: 'MM Server Cloud Logo',
+    previewUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="220" height="80" viewBox="0 0 220 80">
+        <defs>
+          <linearGradient id="cloudG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d4af37"/>
+            <stop offset="100%" stop-color="#f9e79f"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="220" height="80" rx="16" fill="#16181d" stroke="#ffffff15" stroke-width="1.5"/>
+        <path d="M35 50 A12 12 0 0 1 35 26 A18 18 0 0 1 65 24 A15 15 0 0 1 75 42 A12 12 0 0 1 70 50 Z" fill="url(#cloudG)"/>
+        <text x="90" y="42" fill="#f9e79f" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="18" letter-spacing="1">MMSERVER</text>
+        <text x="90" y="58" fill="#a1a1aa" font-family="'Plus Jakarta Sans', sans-serif" font-weight="500" font-size="10" letter-spacing="2">HOSTING &amp; CLOUD</text>
+      </svg>
+    `)
+  }
+];
+
+export const INITIAL_WATERMARK_CONFIG: WatermarkConfig = {
+  enabled: false,
+  imageUrl: PRESET_WATERMARKS[0].previewUrl,
+  imageFileName: 'selo-verificado.svg',
+  position: 'top-right',
+  scalePercent: 18,
+  opacity: 90,
+  margin: 40,
+  rotation: 0,
+  filterMode: 'original',
+  backgroundStyle: 'none',
 };
 
 export const TEMPLATES: PresetTemplate[] = [

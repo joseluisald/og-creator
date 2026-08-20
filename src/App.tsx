@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Layers,
   Sparkles,
@@ -42,6 +42,19 @@ import {
   CANVAS_HEIGHT,
 } from './utils/canvasRenderer';
 
+const STORAGE_SAVED_CONFIG_KEY = 'mmserver_og_studio_saved_config';
+
+function loadSavedStudioConfig() {
+  try {
+    const raw = localStorage.getItem(STORAGE_SAVED_CONFIG_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Failed to load saved config:', err);
+    return null;
+  }
+}
+
 export default function App() {
   const [authUser, setAuthUser] = useState<string | null>(() => {
     try {
@@ -56,11 +69,13 @@ export default function App() {
     return null;
   });
 
-  const [bgConfig, setBgConfig] = useState<BgConfig>(INITIAL_BG_CONFIG);
-  const [kvConfig, setKvConfig] = useState<KvConfig>(INITIAL_KV_CONFIG);
-  const [textOverlay, setTextOverlay] = useState<TextOverlayConfig>(INITIAL_TEXT_OVERLAY);
-  const [watermarkConfig, setWatermarkConfig] = useState<WatermarkConfig>(INITIAL_WATERMARK_CONFIG);
-  const [showGuides, setShowGuides] = useState<boolean>(false);
+  const savedState = useMemo(() => loadSavedStudioConfig(), []);
+
+  const [bgConfig, setBgConfig] = useState<BgConfig>(() => savedState?.bgConfig || INITIAL_BG_CONFIG);
+  const [kvConfig, setKvConfig] = useState<KvConfig>(() => savedState?.kvConfig || INITIAL_KV_CONFIG);
+  const [textOverlay, setTextOverlay] = useState<TextOverlayConfig>(() => savedState?.textOverlay || INITIAL_TEXT_OVERLAY);
+  const [watermarkConfig, setWatermarkConfig] = useState<WatermarkConfig>(() => savedState?.watermarkConfig || INITIAL_WATERMARK_CONFIG);
+  const [showGuides, setShowGuides] = useState<boolean>(() => savedState?.showGuides ?? false);
   const [activeTab, setActiveTab] = useState<'bg' | 'kv' | 'overlay' | 'watermark'>('bg');
   const [copied, setCopied] = useState<boolean>(false);
   const [isSocialPreviewOpen, setIsSocialPreviewOpen] = useState<boolean>(false);
@@ -162,6 +177,51 @@ export default function App() {
   }, [activeTab]);
 
   // Handlers for updates
+  // Auto-save user settings to localStorage so they persist across sessions and logins
+  useEffect(() => {
+    try {
+      const payload = {
+        bgConfig,
+        kvConfig,
+        textOverlay,
+        watermarkConfig,
+        showGuides,
+        updatedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(STORAGE_SAVED_CONFIG_KEY, JSON.stringify(payload));
+    } catch (e) {
+      console.error('Auto-save error:', e);
+    }
+  }, [bgConfig, kvConfig, textOverlay, watermarkConfig, showGuides]);
+
+  const handleSaveConfig = () => {
+    try {
+      const payload = {
+        bgConfig,
+        kvConfig,
+        textOverlay,
+        watermarkConfig,
+        showGuides,
+        savedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(STORAGE_SAVED_CONFIG_KEY, JSON.stringify(payload));
+      triggerToast('Configurações salvas como seu padrão! Carregará automaticamente no próximo login.');
+    } catch (e) {
+      console.error('Save error:', e);
+      triggerToast('Erro ao salvar configurações.');
+    }
+  };
+
+  const handleResetAll = () => {
+    setBgConfig(INITIAL_BG_CONFIG);
+    setKvConfig(INITIAL_KV_CONFIG);
+    setTextOverlay(INITIAL_TEXT_OVERLAY);
+    setWatermarkConfig(INITIAL_WATERMARK_CONFIG);
+    setShowGuides(false);
+    localStorage.removeItem(STORAGE_SAVED_CONFIG_KEY);
+    triggerToast('Todas as camadas e opções foram restauradas para o padrão de fábrica.');
+  };
+
   const handleBgChange = (updated: Partial<BgConfig>) => {
     setBgConfig((prev) => ({ ...prev, ...updated }));
   };
@@ -290,6 +350,8 @@ export default function App() {
         onDownload={() => handleDownload('png')}
         onCopyClipboard={handleCopyClipboard}
         copied={copied}
+        onSaveConfig={handleSaveConfig}
+        onResetAll={handleResetAll}
         onOpenTemplates={() => setIsTemplatesOpen(true)}
         onToggleSocialPreview={() => setIsSocialPreviewOpen(true)}
         isSocialPreviewOpen={isSocialPreviewOpen}

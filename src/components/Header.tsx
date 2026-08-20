@@ -1,10 +1,12 @@
 import React from 'react';
-import { Download, Sparkles, Copy, Check, Eye, LogOut, User, Code2 } from 'lucide-react';
+import { Download, Sparkles, Copy, Check, Eye, LogOut, User, Code2, BookmarkCheck, RotateCcw } from 'lucide-react';
 
 interface HeaderProps {
   onDownload: () => void;
   onCopyClipboard: () => void;
   copied: boolean;
+  onSaveConfig?: () => void;
+  onResetAll?: () => void;
   onOpenTemplates?: () => void;
   onToggleSocialPreview: () => void;
   isSocialPreviewOpen: boolean;
@@ -17,6 +19,8 @@ export const Header: React.FC<HeaderProps> = ({
   onDownload,
   onCopyClipboard,
   copied,
+  onSaveConfig,
+  onResetAll,
   onOpenTemplates,
   onToggleSocialPreview,
   isSocialPreviewOpen,
@@ -51,6 +55,20 @@ export const Header: React.FC<HeaderProps> = ({
             <User className="w-3.5 h-3.5 text-[#d4af37]" />
             <span className="font-mono text-[#e5e5e5]">{userEmail}</span>
           </div>
+        )}
+
+        {/* Salvar Configuração como Padrão */}
+        {onSaveConfig && (
+          <button
+            id="header-save-config-btn"
+            type="button"
+            onClick={onSaveConfig}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold bg-[#1a1c20] hover:bg-[#27272a] text-[#f9e79f] border border-[#d4af37]/40 hover:border-[#d4af37] transition cursor-pointer shadow-sm shadow-[#d4af3715]"
+            title="Salvar configuração atual para carregar automaticamente sempre que você logar"
+          >
+            <BookmarkCheck className="w-3.5 h-3.5 text-[#d4af37]" />
+            <span>Salvar Padrão</span>
+          </button>
         )}
 
         {onOpenTemplates && (

@@ -1,0 +1,6 @@
+{
+  "name": "OG Image Generator",
+  "description": "Gerador automático de imagens Open Graph (1200x630) com auto-ajuste de background, Key Visual centralizado e exportação em PNG.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

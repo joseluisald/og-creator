@@ -12,13 +12,11 @@ import {
   RefreshCw,
   Eye,
   Check,
-  Copy,
   Image as ImageIcon,
   ShieldCheck,
   Code2,
 } from 'lucide-react';
 import { Header } from './components/Header';
-import { LoginScreen } from './components/LoginScreen';
 import { CanvasStage } from './components/CanvasStage';
 import { BackgroundControls } from './components/BackgroundControls';
 import { KeyVisualControls } from './components/KeyVisualControls';
@@ -27,7 +25,13 @@ import { WatermarkControls } from './components/WatermarkControls';
 import { SocialPreviewModal } from './components/SocialPreviewModal';
 import { MetaTagsModal } from './components/MetaTagsModal';
 import { TemplatesModal } from './components/TemplatesModal';
-import { BgConfig, KvConfig, PresetTemplate, TextOverlayConfig, WatermarkConfig } from './types';
+import { BgConfig, KvConfig, PresetTemplate, TextOverlayConfig, WatermarkConfig, AppSubView } from './types';
+import { AppNavigation } from './components/AppNavigation';
+import { LandingPage } from './components/LandingPage';
+import { AdBanner } from './components/AdBanner';
+import { MetaTagsStudio } from './components/MetaTagsStudio';
+import { RobotsSitemapStudio } from './components/RobotsSitemapStudio';
+import { LlmsTxtStudio } from './components/LlmsTxtStudio';
 import {
   INITIAL_BG_CONFIG,
   INITIAL_KV_CONFIG,
@@ -56,19 +60,6 @@ function loadSavedStudioConfig() {
 }
 
 export default function App() {
-  const [authUser, setAuthUser] = useState<string | null>(() => {
-    try {
-      const stored = localStorage.getItem('og_auth_user');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return parsed?.email || null;
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    return null;
-  });
-
   const savedState = useMemo(() => loadSavedStudioConfig(), []);
 
   const [bgConfig, setBgConfig] = useState<BgConfig>(() => savedState?.bgConfig || INITIAL_BG_CONFIG);
@@ -84,12 +75,62 @@ export default function App() {
   const [canvasDataUrl, setCanvasDataUrl] = useState<string>('');
   const [isRendering, setIsRendering] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  // Parse initial route from pathname or hash
+  const parseCurrentRoute = (): AppSubView => {
+    try {
+      const path = window.location.pathname.replace(/^\//, '').toLowerCase();
+      if (path === 'og-studio' || path === 'og-studio/') return 'og-studio';
+      if (path === 'meta-tags' || path === 'meta-tags/') return 'meta-tags';
+      if (path === 'robots-sitemap' || path === 'robots-sitemap/') return 'robots-sitemap';
+      if (path === 'llms-txt' || path === 'llms-txt/') return 'llms-txt';
+      if (path === '' || path === 'home' || path === 'home/') return 'home';
+
+      const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+      if (hash === 'og-studio') return 'og-studio';
+      if (hash === 'meta-tags') return 'meta-tags';
+      if (hash === 'robots-sitemap') return 'robots-sitemap';
+      if (hash === 'llms-txt') return 'llms-txt';
+      if (hash === 'home' || hash === '') return 'home';
+
+      const stored = localStorage.getItem('mmserver_active_subview');
+      if (stored === 'meta-tags' || stored === 'robots-sitemap' || stored === 'llms-txt' || stored === 'og-studio' || stored === 'home') {
+        return stored as AppSubView;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return 'home';
+  };
+
+  const [currentSubView, setCurrentSubView] = useState<AppSubView>(parseCurrentRoute);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const handleLogout = () => {
-    localStorage.removeItem('og_auth_user');
-    setAuthUser(null);
+  // Sync route on popstate / hashchange (browser forward/back buttons)
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentSubView(parseCurrentRoute());
+    };
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
+  }, []);
+
+  const handleSubViewChange = (view: AppSubView) => {
+    setCurrentSubView(view);
+    try {
+      localStorage.setItem('mmserver_active_subview', view);
+      // Clean HTML5 pushState: / for home, /og-studio for og, etc.
+      const newPath = view === 'home' ? '/' : `/${view}`;
+      if (window.location.pathname !== newPath) {
+        window.history.pushState(null, '', newPath);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const triggerToast = (msg: string) => {
@@ -329,10 +370,6 @@ export default function App() {
     }
   };
 
-  if (!authUser) {
-    return <LoginScreen onLoginSuccess={(email) => setAuthUser(email)} />;
-  }
-
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#e5e5e5] flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Toast Notification */}
@@ -345,152 +382,194 @@ export default function App() {
         </div>
       )}
 
-      {/* App Header */}
-      <Header
-        onDownload={() => handleDownload('png')}
-        onCopyClipboard={handleCopyClipboard}
-        copied={copied}
-        onSaveConfig={handleSaveConfig}
-        onResetAll={handleResetAll}
-        onOpenTemplates={() => setIsTemplatesOpen(true)}
-        onToggleSocialPreview={() => setIsSocialPreviewOpen(true)}
-        isSocialPreviewOpen={isSocialPreviewOpen}
-        onOpenMetaTags={() => setIsMetaTagsOpen(true)}
-        userEmail={authUser}
-        onLogout={handleLogout}
+      {/* Top Application Switcher Bar */}
+      <AppNavigation
+        currentView={currentSubView}
+        onChangeView={handleSubViewChange}
       />
 
-      {/* Main Workspace Layout */}
-      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        {/* Left Side: Controls & Uploads Panel */}
-        <aside className="w-full lg:w-[420px] xl:w-[460px] border-r border-[#ffffff10] bg-[#0f1115]/90 flex flex-col h-auto lg:h-[calc(100vh-65px)] overflow-y-auto">
-          {/* Navigation Tabs */}
-          <div className="grid grid-cols-4 border-b border-[#ffffff10] bg-[#0a0a0a]/90 sticky top-0 z-20 backdrop-blur-md">
-            <button
-              type="button"
-              onClick={() => setActiveTab('bg')}
-              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
-                activeTab === 'bg'
-                  ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
-                  : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
-              }`}
-            >
-              <ImageIcon className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span className="truncate">1. Fundo</span>
-            </button>
+      {/* Sub-Application 0: Landing Page (Default on /) */}
+      {currentSubView === 'home' && (
+        <LandingPage onNavigate={handleSubViewChange} />
+      )}
 
-            <button
-              type="button"
-              onClick={() => setActiveTab('kv')}
-              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
-                activeTab === 'kv'
-                  ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
-                  : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span className="truncate">2. Visual</span>
-            </button>
+      {/* Sub-Application 1: Meta Tags & SEO Suite */}
+      {currentSubView === 'meta-tags' && (
+        <MetaTagsStudio
+          currentOgCanvasImage={canvasDataUrl}
+          currentOgTitle={textOverlay.titleText}
+          currentOgSubtitle={textOverlay.subtitleText}
+          onNavigateToOgStudio={() => handleSubViewChange('og-studio')}
+          triggerToast={triggerToast}
+        />
+      )}
 
-            <button
-              type="button"
-              onClick={() => setActiveTab('overlay')}
-              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
-                activeTab === 'overlay'
-                  ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
-                  : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
-              }`}
-            >
-              <Type className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span className="truncate">3. Textos</span>
-            </button>
+      {/* Sub-Application 2: Robots.txt, Sitemap.xml & AI Bot Shield */}
+      {currentSubView === 'robots-sitemap' && (
+        <RobotsSitemapStudio
+          triggerToast={triggerToast}
+          onNavigateToMetaTags={() => handleSubViewChange('meta-tags')}
+        />
+      )}
 
-            <button
-              type="button"
-              onClick={() => setActiveTab('watermark')}
-              className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
-                activeTab === 'watermark'
-                  ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
-                  : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
-              }`}
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span className="truncate">4. Selo/Logo</span>
-            </button>
-          </div>
+      {/* Sub-Application 3: llms.txt & llms-full.txt Generator Studio */}
+      {currentSubView === 'llms-txt' && (
+        <LlmsTxtStudio
+          triggerToast={triggerToast}
+          onNavigateToMetaTags={() => handleSubViewChange('meta-tags')}
+        />
+      )}
 
-          {/* Tab Content Container */}
-          <div className="p-5 lg:p-6 flex-1">
-            {activeTab === 'bg' && (
-              <BackgroundControls
-                config={bgConfig}
-                onChange={handleBgChange}
-                onReset={handleResetBg}
-              />
-            )}
-
-            {activeTab === 'kv' && (
-              <KeyVisualControls
-                config={kvConfig}
-                onChange={handleKvChange}
-                onReset={handleResetKv}
-              />
-            )}
-
-            {activeTab === 'overlay' && (
-              <OverlayControls
-                config={textOverlay}
-                onChange={handleOverlayChange}
-              />
-            )}
-
-            {activeTab === 'watermark' && (
-              <WatermarkControls
-                config={watermarkConfig}
-                onChange={handleWatermarkChange}
-                onFileUpload={handleWatermarkFileUpload}
-              />
-            )}
-          </div>
-        </aside>
-
-        {/* Right Side: Interactive Live Canvas Stage */}
-        <section className="flex-1 p-5 lg:p-7 bg-[#0a0a0a] flex flex-col min-w-0">
-          <CanvasStage
-            canvasRef={canvasRef}
-            onDownload={handleDownload}
-            onCopyClipboard={handleCopyClipboard}
-            copied={copied}
-            showGuides={showGuides}
-            onToggleGuides={() => setShowGuides((prev) => !prev)}
-            isRendering={isRendering}
+      {/* Sub-Application 4: OG Image Studio */}
+      {currentSubView === 'og-studio' && (
+        <>
+          {/* App Header */}
+          <Header
+            onDownload={() => handleDownload('png')}
+            onSaveConfig={handleSaveConfig}
+            onResetAll={handleResetAll}
+            onOpenTemplates={() => setIsTemplatesOpen(true)}
+            onToggleSocialPreview={() => setIsSocialPreviewOpen(true)}
+            isSocialPreviewOpen={isSocialPreviewOpen}
           />
-        </section>
-      </main>
 
-      {/* Social Media Preview Modal */}
-      <SocialPreviewModal
-        isOpen={isSocialPreviewOpen}
-        onClose={() => setIsSocialPreviewOpen(false)}
-        canvasDataUrl={canvasDataUrl}
-        title={textOverlay.titleText || 'Título do Projeto'}
-        subtitle={textOverlay.subtitleText || 'Sua descrição aqui'}
-      />
+          {/* Main Workspace Layout */}
+          <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            {/* Left Side: Controls & Uploads Panel */}
+            <aside className="w-full lg:w-[420px] xl:w-[460px] border-r border-[#ffffff10] bg-[#0f1115]/90 flex flex-col h-auto lg:h-[calc(100vh-105px)] overflow-y-auto">
+              {/* Navigation Tabs */}
+              <div className="grid grid-cols-4 border-b border-[#ffffff10] bg-[#0a0a0a]/90 sticky top-0 z-20 backdrop-blur-md">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('bg')}
+                  className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
+                    activeTab === 'bg'
+                      ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
+                      : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
+                  }`}
+                >
+                  <ImageIcon className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <span className="truncate">1. Fundo</span>
+                </button>
 
-      {/* Meta Tags Generator Modal */}
-      <MetaTagsModal
-        isOpen={isMetaTagsOpen}
-        onClose={() => setIsMetaTagsOpen(false)}
-        defaultTitle={textOverlay.titleText || 'Título do Projeto'}
-        defaultSubtitle={textOverlay.subtitleText || 'Sua descrição aqui'}
-      />
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('kv')}
+                  className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
+                    activeTab === 'kv'
+                      ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
+                      : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <span className="truncate">2. Visual</span>
+                </button>
 
-      {/* Preset Templates Modal */}
-      <TemplatesModal
-        isOpen={isTemplatesOpen}
-        onClose={() => setIsTemplatesOpen(false)}
-        onSelectTemplate={handleSelectTemplate}
-      />
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('overlay')}
+                  className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
+                    activeTab === 'overlay'
+                      ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
+                      : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
+                  }`}
+                >
+                  <Type className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <span className="truncate">3. Textos</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('watermark')}
+                  className={`py-3 px-1 text-[11px] uppercase tracking-wider font-semibold flex flex-col sm:flex-row items-center justify-center gap-1.5 border-b-2 transition cursor-pointer ${
+                    activeTab === 'watermark'
+                      ? 'border-[#d4af37] text-[#f9e79f] bg-[#16181d]'
+                      : 'border-transparent text-[#71717a] hover:text-[#e5e5e5] hover:bg-[#16181d]/50'
+                  }`}
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <span className="truncate">4. Selo/Logo</span>
+                </button>
+              </div>
+
+              {/* Tab Content Container */}
+              <div className="p-5 lg:p-6 flex-1">
+                {activeTab === 'bg' && (
+                  <BackgroundControls
+                    config={bgConfig}
+                    onChange={handleBgChange}
+                    onReset={handleResetBg}
+                  />
+                )}
+
+                {activeTab === 'kv' && (
+                  <KeyVisualControls
+                    config={kvConfig}
+                    onChange={handleKvChange}
+                    onReset={handleResetKv}
+                  />
+                )}
+
+                {activeTab === 'overlay' && (
+                  <OverlayControls
+                    config={textOverlay}
+                    onChange={handleOverlayChange}
+                  />
+                )}
+
+                {activeTab === 'watermark' && (
+                  <WatermarkControls
+                    config={watermarkConfig}
+                    onChange={handleWatermarkChange}
+                    onFileUpload={handleWatermarkFileUpload}
+                  />
+                )}
+
+                {/* Sidebar Ad Slot */}
+                <AdBanner format="sidebar" className="mt-6" slotId="og-sidebar-ad" />
+              </div>
+            </aside>
+
+            {/* Right Side: Interactive Live Canvas Stage */}
+            <section className="flex-1 p-5 lg:p-7 bg-[#0a0a0a] flex flex-col min-w-0">
+              <CanvasStage
+                canvasRef={canvasRef}
+                onDownload={handleDownload}
+                onCopyClipboard={handleCopyClipboard}
+                copied={copied}
+                showGuides={showGuides}
+                onToggleGuides={() => setShowGuides((prev) => !prev)}
+                isRendering={isRendering}
+              />
+              <AdBanner format="leaderboard" className="mt-4" slotId="og-bottom-leaderboard" />
+            </section>
+          </main>
+
+          {/* Social Media Preview Modal */}
+          <SocialPreviewModal
+            isOpen={isSocialPreviewOpen}
+            onClose={() => setIsSocialPreviewOpen(false)}
+            canvasDataUrl={canvasDataUrl}
+            title={textOverlay.titleText || 'Título do Projeto'}
+            subtitle={textOverlay.subtitleText || 'Sua descrição aqui'}
+          />
+
+          {/* Meta Tags Generator Modal (Quick access) */}
+          <MetaTagsModal
+            isOpen={isMetaTagsOpen}
+            onClose={() => setIsMetaTagsOpen(false)}
+            defaultTitle={textOverlay.titleText || 'Título do Projeto'}
+            defaultSubtitle={textOverlay.subtitleText || 'Sua descrição aqui'}
+          />
+
+          {/* Preset Templates Modal */}
+          <TemplatesModal
+            isOpen={isTemplatesOpen}
+            onClose={() => setIsTemplatesOpen(false)}
+            onSelectTemplate={handleSelectTemplate}
+          />
+        </>
+      )}
     </div>
   );
 }

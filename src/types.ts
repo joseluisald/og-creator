@@ -98,3 +98,155 @@ export interface ExportSettings {
   quality: number; // 0.1 to 1.0 for jpeg/webp
   fileName: string;
 }
+
+export type OgType = 'website' | 'article' | 'product' | 'profile' | 'video.other' | 'book';
+export type TwitterCardType = 'summary_large_image' | 'summary' | 'app' | 'player';
+export type SchemaType =
+  | 'WebSite'
+  | 'Organization'
+  | 'Article'
+  | 'BlogPosting'
+  | 'Product'
+  | 'SoftwareApplication'
+  | 'LocalBusiness'
+  | 'FAQPage'
+  | 'BreadcrumbList';
+
+export type FrameworkType =
+  | 'html'
+  | 'nextjs-app'
+  | 'nextjs-pages'
+  | 'astro'
+  | 'nuxt'
+  | 'sveltekit'
+  | 'remix'
+  | 'wordpress'
+  | 'jsonld';
+
+export interface MetaTagsConfig {
+  // General & Standard Meta
+  pageTitle: string;
+  metaDescription: string;
+  canonicalUrl: string;
+  keywords: string;
+  author: string;
+  publisher: string;
+  copyright: string;
+  robotsIndex: boolean;
+  robotsFollow: boolean;
+  robotsNoArchive: boolean;
+  robotsNoSnippet: boolean;
+  robotsMaxImagePreview: 'large' | 'standard' | 'none';
+  themeColor: string;
+  language: string;
+  viewport: string;
+
+  // Open Graph
+  ogType: OgType;
+  ogTitle: string;
+  ogDescription: string;
+  ogUrl: string;
+  ogImageUrl: string;
+  ogImageWidth: number;
+  ogImageHeight: number;
+  ogImageAlt: string;
+  ogImageType: string;
+  ogSiteName: string;
+  ogLocale: string;
+
+  // Article Specific
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
+  articleAuthor?: string;
+  articleSection?: string;
+  articleTags?: string;
+
+  // Product Specific
+  productPrice?: string;
+  productCurrency?: string;
+  productAvailability?: 'in stock' | 'out of stock' | 'preorder';
+
+  // Twitter / X
+  twitterCard: TwitterCardType;
+  twitterSite: string;
+  twitterCreator: string;
+  twitterTitle: string;
+  twitterDescription: string;
+  twitterImage: string;
+  twitterImageAlt: string;
+
+  // Schema.org / JSON-LD
+  enableSchema: boolean;
+  schemaType: SchemaType;
+  schemaOrgName: string;
+  schemaOrgLogo: string;
+  schemaSocialLinks: string; // comma separated
+  schemaFaqItems?: Array<{ question: string; answer: string }>;
+  schemaSoftwareCategory?: string;
+  schemaRatingValue?: string;
+  schemaReviewCount?: string;
+
+  // Icons & PWA
+  faviconUrl: string;
+  appleTouchIconUrl: string;
+  manifestUrl: string;
+}
+
+export type AppSubView = 'home' | 'og-studio' | 'meta-tags' | 'robots-sitemap' | 'llms-txt';
+
+export interface LlmsLinkItem {
+  id: string;
+  title: string;
+  url: string;
+  description: string;
+  section: 'core' | 'optional' | 'api' | 'custom';
+  contentMarkdown?: string;
+}
+
+export interface LlmsTxtConfig {
+  projectName: string;
+  summary: string;
+  detailedOverview: string;
+  siteUrl: string;
+  contactOrMaintainer: string;
+  customSections: string;
+  links: LlmsLinkItem[];
+  enableFullTxt: boolean;
+  fullTxtHeaderNotice: string;
+}
+
+export interface SitemapUrlItem {
+  id: string;
+  loc: string;
+  lastmod: string;
+  changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+  priority: string;
+  images?: Array<{ loc: string; title?: string }>;
+  hreflangs?: Array<{ lang: string; href: string }>;
+}
+
+export interface AiBotRule {
+  botName: string;
+  userAgent: string;
+  description: string;
+  category: 'llm_training' | 'search_ai' | 'scraper';
+  allowed: boolean;
+}
+
+export interface RobotsConfig {
+  siteUrl: string;
+  allowAllSearchEngines: boolean;
+  disallowPaths: string[];
+  allowPaths: string[];
+  crawlDelay?: number;
+  sitemapUrl: string;
+  aiBots: AiBotRule[];
+  customRules: string;
+  enableSecurityTxt: boolean;
+  securityContact: string;
+  securityExpires: string;
+  securityEncryption: string;
+  securityPolicy: string;
+  securityCanonical: string;
+}
+

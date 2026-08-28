@@ -1,32 +1,21 @@
 import React from 'react';
-import { Download, Sparkles, Copy, Check, Eye, LogOut, User, Code2, BookmarkCheck, RotateCcw } from 'lucide-react';
+import { Download, Sparkles, Eye, BookmarkCheck } from 'lucide-react';
 
 interface HeaderProps {
   onDownload: () => void;
-  onCopyClipboard: () => void;
-  copied: boolean;
   onSaveConfig?: () => void;
   onResetAll?: () => void;
   onOpenTemplates?: () => void;
   onToggleSocialPreview: () => void;
   isSocialPreviewOpen: boolean;
-  onOpenMetaTags?: () => void;
-  userEmail?: string | null;
-  onLogout?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onDownload,
-  onCopyClipboard,
-  copied,
   onSaveConfig,
-  onResetAll,
   onOpenTemplates,
   onToggleSocialPreview,
   isSocialPreviewOpen,
-  onOpenMetaTags,
-  userEmail,
-  onLogout,
 }) => {
   return (
     <header className="border-b border-[#ffffff10] bg-[#0f1115]/95 backdrop-blur-md sticky top-0 z-30 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
@@ -50,13 +39,6 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">
-        {userEmail && (
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#16181d] border border-[#ffffff10] text-[11px] text-[#a1a1aa]">
-            <User className="w-3.5 h-3.5 text-[#d4af37]" />
-            <span className="font-mono text-[#e5e5e5]">{userEmail}</span>
-          </div>
-        )}
-
         {/* Salvar Configuração como Padrão */}
         {onSaveConfig && (
           <button
@@ -64,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onSaveConfig}
             className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold bg-[#1a1c20] hover:bg-[#27272a] text-[#f9e79f] border border-[#d4af37]/40 hover:border-[#d4af37] transition cursor-pointer shadow-sm shadow-[#d4af3715]"
-            title="Salvar configuração atual para carregar automaticamente sempre que você logar"
+            title="Salvar configuração atual para carregar automaticamente"
           >
             <BookmarkCheck className="w-3.5 h-3.5 text-[#d4af37]" />
             <span>Salvar Padrão</span>
@@ -84,19 +66,6 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
 
-        {onOpenMetaTags && (
-          <button
-            id="header-metatags-btn"
-            type="button"
-            onClick={onOpenMetaTags}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs uppercase tracking-wider font-semibold bg-[#1a1c20] hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#f9e79f] border border-[#ffffff15] transition cursor-pointer"
-            title="Gerar código de Meta Tags HTML para o cabeçalho do site"
-          >
-            <Code2 className="w-3.5 h-3.5 text-[#d4af37]" />
-            <span>Tags HTML</span>
-          </button>
-        )}
-
         <button
           id="header-preview-btn"
           type="button"
@@ -112,26 +81,6 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         <button
-          id="header-copy-btn"
-          type="button"
-          onClick={onCopyClipboard}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs uppercase tracking-wider font-semibold bg-[#1a1c20] hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#e5e5e5] border border-[#ffffff15] transition cursor-pointer"
-          title="Copiar imagem PNG para área de transferência"
-        >
-          {copied ? (
-            <>
-              <Check className="w-3.5 h-3.5 text-[#d4af37]" />
-              <span className="text-[#f9e79f] font-bold">Copiado!</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-3.5 h-3.5 text-[#71717a]" />
-              <span>Copiar PNG</span>
-            </>
-          )}
-        </button>
-
-        <button
           id="header-download-btn"
           type="button"
           onClick={onDownload}
@@ -140,19 +89,8 @@ export const Header: React.FC<HeaderProps> = ({
           <Download className="w-4 h-4" />
           <span>Baixar Imagem</span>
         </button>
-
-        {onLogout && (
-          <button
-            id="header-logout-btn"
-            type="button"
-            onClick={onLogout}
-            className="inline-flex items-center gap-1.5 p-2 rounded-full text-[#71717a] hover:text-red-400 hover:bg-[#1a1c20] border border-transparent hover:border-red-900/40 transition cursor-pointer"
-            title="Sair do Studio"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
-        )}
       </div>
     </header>
   );
 };
+

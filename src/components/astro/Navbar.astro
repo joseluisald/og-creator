@@ -1,5 +1,16 @@
 ---
-import { Sparkles, Image as ImageIcon, Code2, ShieldAlert, Bot, Home } from 'lucide-astro';
+import {
+  Sparkles,
+  Image as ImageIcon,
+  Code2,
+  ShieldAlert,
+  Bot,
+  Home,
+  Search,
+  Smile,
+  ShieldCheck,
+  ArrowRightLeft
+} from 'lucide-astro';
 
 interface Props {
   currentPath?: string;
@@ -9,10 +20,14 @@ const { currentPath = '/' } = Astro.props;
 
 const navItems = [
   { href: '/', label: 'Início', icon: Home },
-  { href: '/og-studio', label: 'OG Image', icon: ImageIcon, badge: '1200×630' },
-  { href: '/meta-tags', label: 'Meta Tags', icon: Code2, badge: 'Schema' },
-  { href: '/robots-sitemap', label: 'Robots & Sitemap', icon: ShieldAlert, badge: 'IA Shield' },
-  { href: '/llms-txt', label: 'llms.txt Studio', icon: Bot, badge: 'NOVO', isNew: true },
+  { href: '/serp-simulator', label: 'Simulador SERP', icon: Search, isNew: true },
+  { href: '/favicon-studio', label: 'Favicon & PWA', icon: Smile, isNew: true },
+  { href: '/security-headers', label: 'Headers HTTP', icon: ShieldCheck, isNew: true },
+  { href: '/redirects-generator', label: 'Redirecionamentos', icon: ArrowRightLeft, isNew: true },
+  { href: '/og-studio', label: 'OG Image', icon: ImageIcon },
+  { href: '/meta-tags', label: 'Meta Tags', icon: Code2 },
+  { href: '/robots-sitemap', label: 'Robots & Sitemap', icon: ShieldAlert },
+  { href: '/llms-txt', label: 'llms.txt', icon: Bot },
 ];
 ---
 

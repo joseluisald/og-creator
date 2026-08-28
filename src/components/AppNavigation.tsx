@@ -1,5 +1,16 @@
 import React from 'react';
-import { Sparkles, Code2, Image as ImageIcon, ShieldAlert, Bot, Home } from 'lucide-react';
+import {
+  Sparkles,
+  Code2,
+  Image as ImageIcon,
+  ShieldAlert,
+  Bot,
+  Home,
+  Search,
+  Smile,
+  ShieldCheck,
+  ArrowRightLeft
+} from 'lucide-react';
 import { AppSubView } from '../types';
 
 interface AppNavigationProps {
@@ -47,6 +58,65 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
 
           <button
             type="button"
+            id="subapp-tab-serp"
+            onClick={() => onChangeView('serp-simulator')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-semibold transition cursor-pointer ${
+              currentView === 'serp-simulator'
+                ? 'bg-[#d4af37] text-black shadow-md shadow-[#d4af3725]'
+                : 'text-[#a1a1aa] hover:text-[#e5e5e5] hover:bg-[#1f2228]'
+            }`}
+          >
+            <Search className="w-3.5 h-3.5" />
+            <span>Simulador SERP</span>
+            <span className="px-1.5 py-0.2 rounded-md bg-[#d4af37]/20 text-[#f9e79f] text-[9px] font-mono font-bold">
+              NOVO
+            </span>
+          </button>
+
+          <button
+            type="button"
+            id="subapp-tab-favicon"
+            onClick={() => onChangeView('favicon-studio')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-semibold transition cursor-pointer ${
+              currentView === 'favicon-studio'
+                ? 'bg-[#d4af37] text-black shadow-md shadow-[#d4af3725]'
+                : 'text-[#a1a1aa] hover:text-[#e5e5e5] hover:bg-[#1f2228]'
+            }`}
+          >
+            <Smile className="w-3.5 h-3.5" />
+            <span>Favicon &amp; PWA</span>
+          </button>
+
+          <button
+            type="button"
+            id="subapp-tab-security"
+            onClick={() => onChangeView('security-headers')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-semibold transition cursor-pointer ${
+              currentView === 'security-headers'
+                ? 'bg-[#d4af37] text-black shadow-md shadow-[#d4af3725]'
+                : 'text-[#a1a1aa] hover:text-[#e5e5e5] hover:bg-[#1f2228]'
+            }`}
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Headers HTTP</span>
+          </button>
+
+          <button
+            type="button"
+            id="subapp-tab-redirects"
+            onClick={() => onChangeView('redirects-generator')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-semibold transition cursor-pointer ${
+              currentView === 'redirects-generator'
+                ? 'bg-[#d4af37] text-black shadow-md shadow-[#d4af3725]'
+                : 'text-[#a1a1aa] hover:text-[#e5e5e5] hover:bg-[#1f2228]'
+            }`}
+          >
+            <ArrowRightLeft className="w-3.5 h-3.5" />
+            <span>Redirecionamentos</span>
+          </button>
+
+          <button
+            type="button"
             id="subapp-tab-og"
             onClick={() => onChangeView('og-studio')}
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-semibold transition cursor-pointer ${
@@ -57,7 +127,6 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
           >
             <ImageIcon className="w-3.5 h-3.5" />
             <span>OG Image</span>
-            <span className="hidden lg:inline text-[10px] opacity-75 font-mono">/og-studio</span>
           </button>
 
           <button
@@ -72,7 +141,6 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
           >
             <Code2 className="w-3.5 h-3.5" />
             <span>Meta Tags</span>
-            <span className="hidden lg:inline text-[10px] opacity-75 font-mono">/meta-tags</span>
           </button>
 
           <button
@@ -87,7 +155,6 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
           >
             <ShieldAlert className="w-3.5 h-3.5" />
             <span>Robots &amp; Sitemap</span>
-            <span className="hidden lg:inline text-[10px] opacity-75 font-mono">/robots-sitemap</span>
           </button>
 
           <button
@@ -101,11 +168,7 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
             }`}
           >
             <Bot className="w-3.5 h-3.5" />
-            <span>llms.txt Studio</span>
-            <span className="hidden lg:inline text-[10px] opacity-75 font-mono">/llms-txt</span>
-            <span className="px-1.5 py-0.2 rounded-md bg-[#d4af37]/20 text-[#f9e79f] text-[9px] font-mono font-bold">
-              NOVO
-            </span>
+            <span>llms.txt</span>
           </button>
         </div>
       </div>

@@ -21,6 +21,8 @@ import {
   Sliders,
   Terminal,
   ShieldCheck,
+  Smile,
+  ArrowRightLeft,
   Check,
   HelpCircle
 } from 'lucide-react';
@@ -32,13 +34,14 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const [copiedLink, setCopiedLink] = useState(false);
+  const [quickAuditUrl, setQuickAuditUrl] = useState('');
 
   const handleShareApp = () => {
     try {
       if (navigator.share) {
         navigator.share({
           title: 'Web & SEO Studio - Suíte Grátis para Webmasters',
-          text: 'Gere imagens OG, Meta Tags, Robots.txt e llms.txt gratuitamente!',
+          text: 'Gere imagens OG, analise sites no Lighthouse, Meta Tags, Robots.txt e llms.txt gratuitamente!',
           url: window.location.origin,
         });
       } else {
@@ -51,7 +54,92 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     }
   };
 
+  const handleQuickAuditSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickAuditUrl.trim()) {
+      onNavigate('serp-simulator');
+      return;
+    }
+    const targetUrl = quickAuditUrl.trim();
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', `/serp-simulator?q=${encodeURIComponent(targetUrl)}`);
+    }
+    onNavigate('serp-simulator');
+  };
+
   const SUB_APPS = [
+    {
+      id: 'serp-simulator' as AppSubView,
+      title: 'Simulador de SERP Google & Rich Snippets',
+      route: '/serp-simulator',
+      badge: 'Desktop, Mobile & CTR Booster',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      icon: Search,
+      iconBg: 'from-amber-400 to-orange-500',
+      description:
+        'Simule e otimize exatamente como seu site aparece nas buscas do Google (Desktop e Mobile). Teste limites de pixels (580px), corte de títulos, estrelas de avaliação, preço de produtos e snippets de FAQ.',
+      highlights: [
+        'Contador de largura de pixels real para título (580px) e descrição (960px)',
+        'Simulador visual do Google com alternância Dark Mode e Light Mode',
+        'Ativação de Rich Snippets: Estrelas de Avaliação (★★★★★), Preços e FAQ Accordion',
+        'Diagnóstico de CTR Score com detecção de Power Words, números e colchetes'
+      ],
+      cta: 'Simular SERP do Google'
+    },
+    {
+      id: 'favicon-studio' as AppSubView,
+      title: 'Favicon & Web Manifest Studio',
+      route: '/favicon-studio',
+      badge: 'Pacote Completo PWA & Ícones',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      icon: Smile,
+      iconBg: 'from-emerald-400 to-teal-500',
+      description:
+        'Crie favicons profissionais a partir de emojis, texto ou imagens e gere o pacote completo com favicon.ico, PNGs (16x16 até 512x512), Apple Touch Icon e site.webmanifest para PWA.',
+      highlights: [
+        'Exportação instantânea de arquivo ZIP com todos os tamanhos oficiais',
+        'Editor de site.webmanifest para aplicativos web progressivos (PWA)',
+        'Pré-visualização ao vivo em abas do Chrome (Dark/Light) e Home Screen de smartphones',
+        'Tags HTML <head> prontas para Next.js, Astro e HTML5'
+      ],
+      cta: 'Criar Favicon & Manifest'
+    },
+    {
+      id: 'security-headers' as AppSubView,
+      title: 'Headers HTTP de Segurança',
+      route: '/security-headers',
+      badge: 'CSP, HSTS & IIS / Nginx',
+      badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40',
+      icon: ShieldCheck,
+      iconBg: 'from-indigo-400 to-blue-600',
+      description:
+        'Audite e configure cabeçalhos HTTP de segurança de nível bancário: Content-Security-Policy (CSP), HSTS, X-Frame-Options, X-Content-Type-Options para Apache, Nginx, IIS (web.config) e Vercel.',
+      highlights: [
+        'Auditoria ao vivo de cabeçalhos de segurança com nota de A+ a F',
+        'Presets de CSP para SaaS, Bancos, Next.js, GA4 e Google Tag Manager',
+        'Geração de código em 1-clique para Nginx, Apache (.htaccess), IIS (web.config) e Express',
+        'Proteção contra XSS, Clickjacking, MIME Sniffing e vazamento de dados'
+      ],
+      cta: 'Gerar Headers de Segurança'
+    },
+    {
+      id: 'redirects-generator' as AppSubView,
+      title: 'Gerador de Redirecionamentos 301',
+      route: '/redirects-generator',
+      badge: '.htaccess, Nginx & IIS web.config',
+      badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+      icon: ArrowRightLeft,
+      iconBg: 'from-cyan-400 to-blue-500',
+      description:
+        'Crie regras de redirecionamento 301/302 individuais ou em massa, padronização canônica (HTTPS, www vs sem www, trailing slash) e bloqueio de bots maliciosos para qualquer servidor web.',
+      highlights: [
+        'Geração para Apache (.htaccess), Nginx, IIS (web.config), Vercel e Cloudflare',
+        'Importação em lote de dezenas de URLs via copiar e colar',
+        'Regras automáticas de HTTPS e unificação de domínio www vs non-www',
+        'Bloqueio de arquivos ocultos (.env, .git) e rotas sensíveis'
+      ],
+      cta: 'Gerar Redirecionamentos'
+    },
     {
       id: 'og-studio' as AppSubView,
       title: 'OG Image Studio',
@@ -149,46 +237,118 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg text-[#a1a1aa] mt-5 max-w-2xl leading-relaxed">
-          Gere imagens Open Graph perfeitas, Meta Tags para 9 frameworks, proteção de robôs de IA no Robots.txt e arquivos llms.txt para assistentes de código. 
-          <span className="text-[#f9e79f] font-medium block mt-1">Direto no seu navegador, sem pagar nada.</span>
+          Audite sites no Google Lighthouse, crie imagens Open Graph perfeitas, gere Meta Tags para 9 frameworks, proteja contra robôs de IA e configure arquivos llms.txt. 
+          <span className="text-[#f9e79f] font-medium block mt-1">Direto no seu navegador, 100% gratuito e sem cadastro.</span>
         </p>
 
+        {/* Quick URL Audit Form */}
+        <div className="w-full max-w-xl mt-8">
+          <form
+            onSubmit={handleQuickAuditSubmit}
+            className="flex flex-col sm:flex-row items-center gap-2 p-1.5 rounded-2xl bg-[#14161b] border border-[#d4af37]/40 shadow-xl shadow-[#d4af3710] focus-within:border-[#d4af37] transition"
+          >
+            <div className="flex items-center gap-2.5 px-3.5 py-2.5 w-full flex-1">
+              <Search className="w-4 h-4 text-[#d4af37] shrink-0" />
+              <input
+                type="text"
+                value={quickAuditUrl}
+                onChange={(e) => setQuickAuditUrl(e.target.value)}
+                placeholder="Simular título ou palavra-chave no Google..."
+                className="w-full bg-transparent text-sm text-white placeholder-[#71717a] focus:outline-none"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#d4af37] hover:bg-[#f9e79f] text-black font-bold text-xs sm:text-sm transition shadow-md shadow-[#d4af3720] cursor-pointer whitespace-nowrap"
+            >
+              <Search className="w-4 h-4 text-black" />
+              <span>Simular SERP Google</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </form>
+          <div className="flex items-center justify-center gap-4 mt-2.5 text-[11px] text-[#71717a]">
+            <span>⚡ Testes em tempo real:</span>
+            <span className="text-[#a1a1aa]">Corte em Pixels (580px)</span>
+            <span>•</span>
+            <span className="text-[#a1a1aa]">Mobile &amp; Desktop</span>
+            <span>•</span>
+            <span className="text-[#a1a1aa]">Avaliações (★★★★★)</span>
+            <span>•</span>
+            <span className="text-[#a1a1aa]">CTR Booster</span>
+          </div>
+        </div>
+
         {/* Main Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-3.5 mt-8 w-full">
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-6 w-full">
+          <button
+            type="button"
+            onClick={() => onNavigate('serp-simulator')}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-semibold transition cursor-pointer"
+          >
+            <Search className="w-3.5 h-3.5 text-amber-400" />
+            <span>Simulador SERP</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('favicon-studio')}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-emerald-500/50"
+          >
+            <Smile className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Favicon &amp; PWA</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('security-headers')}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-indigo-500/50"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Headers HTTP</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigate('redirects-generator')}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-cyan-500/50"
+          >
+            <ArrowRightLeft className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Redirecionamentos</span>
+          </button>
+
           <button
             type="button"
             onClick={() => onNavigate('og-studio')}
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#d4af37] hover:bg-[#f9e79f] text-black font-bold text-sm transition shadow-lg shadow-[#d4af3725] cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-[#d4af37]/50"
           >
-            <ImageIcon className="w-4 h-4" />
-            <span>Criar Imagem OG (1200×630)</span>
-            <ArrowRight className="w-4 h-4" />
+            <ImageIcon className="w-3.5 h-3.5 text-[#d4af37]" />
+            <span>OG Image Studio</span>
           </button>
 
           <button
             type="button"
             onClick={() => onNavigate('meta-tags')}
-            className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-sm border border-[#ffffff20] transition cursor-pointer hover:border-[#d4af37]/50"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-blue-500/50"
           >
-            <Code2 className="w-4 h-4 text-[#d4af37]" />
-            <span>Gerar Meta Tags &amp; Schema</span>
+            <Code2 className="w-3.5 h-3.5 text-blue-400" />
+            <span>Meta Tags &amp; Schema</span>
           </button>
 
           <button
             type="button"
             onClick={() => onNavigate('robots-sitemap')}
-            className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-sm border border-[#ffffff20] transition cursor-pointer hover:border-emerald-500/50"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-emerald-500/50"
           >
-            <ShieldAlert className="w-4 h-4 text-emerald-400" />
+            <ShieldAlert className="w-3.5 h-3.5 text-emerald-400" />
             <span>Robots &amp; Sitemap</span>
           </button>
 
           <button
             type="button"
             onClick={() => onNavigate('llms-txt')}
-            className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-sm border border-[#ffffff20] transition cursor-pointer hover:border-purple-500/50"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-purple-500/50"
           >
-            <Bot className="w-4 h-4 text-purple-400" />
+            <Bot className="w-3.5 h-3.5 text-purple-400" />
             <span>llms.txt Studio</span>
           </button>
         </div>
@@ -218,7 +378,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       <section className="px-4 sm:px-6 py-12 max-w-6xl mx-auto w-full">
         <div className="text-center mb-10">
           <span className="text-[11px] font-mono uppercase tracking-widest text-[#d4af37] font-bold">
-            Quatro Ferramentas Integradas
+            Cinco Ferramentas Integradas
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white mt-1">
             Escolha uma das ferramentas abaixo
@@ -384,6 +544,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="flex items-center gap-4 flex-wrap">
+            <button
+              type="button"
+              onClick={() => onNavigate('serp-simulator')}
+              className="text-amber-400 hover:text-white transition cursor-pointer font-medium"
+            >
+              Simulador SERP
+            </button>
             <button
               type="button"
               onClick={() => onNavigate('og-studio')}

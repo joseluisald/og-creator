@@ -192,7 +192,219 @@ export interface MetaTagsConfig {
   manifestUrl: string;
 }
 
-export type AppSubView = 'home' | 'og-studio' | 'meta-tags' | 'robots-sitemap' | 'llms-txt';
+export type AppSubView =
+  | 'home'
+  | 'serp-simulator'
+  | 'favicon-studio'
+  | 'security-headers'
+  | 'redirects-generator'
+  | 'og-studio'
+  | 'meta-tags'
+  | 'robots-sitemap'
+  | 'llms-txt';
+
+export interface SerpSnippetConfig {
+  title: string;
+  description: string;
+  url: string;
+  displayUrl: string;
+  primaryKeyword: string;
+  faviconEmoji: string;
+  faviconUrl?: string;
+  
+  // Date badge
+  showDate: boolean;
+  dateString: string;
+  
+  // Rich Snippets: Rating
+  enableRating: boolean;
+  ratingValue: number;
+  reviewCount: number;
+  maxRating: number;
+  
+  // Rich Snippets: Product
+  enableProduct: boolean;
+  price: string;
+  currency: string;
+  availability: 'InStock' | 'OutOfStock' | 'PreOrder';
+  
+  // Rich Snippets: Sitelinks
+  enableSitelinks: boolean;
+  sitelinks: Array<{ id: string; title: string; snippet: string; url: string }>;
+  
+  // Rich Snippets: FAQ
+  enableFaq: boolean;
+  faqItems: Array<{ id: string; question: string; answer: string }>;
+  
+  // Thumbnail
+  enableThumbnail: boolean;
+  thumbnailUrl: string;
+}
+
+export interface SerpCtrAnalysis {
+  score: number; // 0-100
+  titlePixelWidth: number;
+  titleCharCount: number;
+  isTitleTruncated: boolean;
+  descPixelWidth: number;
+  descCharCount: number;
+  isDescTruncated: boolean;
+  checks: Array<{
+    id: string;
+    label: string;
+    passed: boolean;
+    importance: 'high' | 'medium' | 'low';
+    feedback: string;
+  }>;
+}
+
+// ==========================================
+// Favicon & Web Manifest Studio Types
+// ==========================================
+export type FaviconSourceType = 'image' | 'emoji' | 'text' | 'icon';
+export type FaviconShape = 'square' | 'rounded' | 'circle' | 'squircle';
+
+export interface FaviconConfig {
+  sourceType: FaviconSourceType;
+  imageUrl: string | null;
+  imageFileName?: string;
+  emoji: string;
+  text: string;
+  fontFamily: string;
+  textColor: string;
+  iconName: string;
+  iconColor: string;
+  bgColor: string;
+  bgGradientEnd?: string;
+  useGradient: boolean;
+  shape: FaviconShape;
+  borderRadiusPercent: number; // 0 to 50
+  paddingPercent: number; // 0 to 40
+  borderWidth: number; // 0 to 20
+  borderColor: string;
+  shadowBlur: number;
+  shadowColor: string;
+}
+
+export interface WebManifestConfig {
+  name: string;
+  shortName: string;
+  description: string;
+  startUrl: string;
+  display: 'standalone' | 'fullscreen' | 'minimal-ui' | 'browser';
+  orientation: 'any' | 'portrait' | 'landscape';
+  themeColor: string;
+  backgroundColor: string;
+  scope: string;
+  lang: string;
+  dir: 'ltr' | 'rtl' | 'auto';
+  id: string;
+  categories: string[];
+}
+
+// ==========================================
+// Security Headers Studio Types
+// ==========================================
+export type HeaderTargetServer =
+  | 'apache'
+  | 'nginx'
+  | 'iis'
+  | 'cloudflare'
+  | 'vercel'
+  | 'netlify'
+  | 'nextjs'
+  | 'express';
+
+export interface SecurityHeadersConfig {
+  // HSTS
+  hstsEnabled: boolean;
+  hstsMaxAge: number; // in seconds (e.g. 31536000)
+  hstsIncludeSubDomains: boolean;
+  hstsPreload: boolean;
+
+  // X-Frame-Options
+  frameOptions: 'DENY' | 'SAMEORIGIN' | 'OFF';
+
+  // X-Content-Type-Options
+  contentTypeOptions: boolean; // nosniff
+
+  // Referrer-Policy
+  referrerPolicy:
+    | 'strict-origin-when-cross-origin'
+    | 'no-referrer'
+    | 'no-referrer-when-downgrade'
+    | 'origin'
+    | 'origin-when-cross-origin'
+    | 'same-origin'
+    | 'strict-origin'
+    | 'unsafe-url';
+
+  // Content Security Policy (CSP)
+  cspEnabled: boolean;
+  cspDefaultSrc: string;
+  cspScriptSrc: string;
+  cspStyleSrc: string;
+  cspImgSrc: string;
+  cspFontSrc: string;
+  cspConnectSrc: string;
+  cspMediaSrc: string;
+  cspObjectSrc: string;
+  cspFrameAncestors: string;
+  cspUpgradeInsecureRequests: boolean;
+  cspReportOnly: boolean;
+
+  // Permissions-Policy
+  permissionsPolicyEnabled: boolean;
+  permCamera: string;
+  permMicrophone: string;
+  permGeolocation: string;
+  permPayment: string;
+  permUsb: string;
+  permFullscreen: string;
+
+  // Cross Origin Policies
+  coop: 'same-origin' | 'same-origin-allow-popups' | 'unsafe-none' | 'OFF';
+  coep: 'require-corp' | 'credentialless' | 'unsafe-none' | 'OFF';
+  corp: 'same-origin' | 'same-site' | 'cross-origin' | 'OFF';
+
+  // Legacy X-XSS-Protection
+  xssProtection: '1; mode=block' | '0' | 'OFF';
+}
+
+// ==========================================
+// Redirects & Web Rules Types
+// ==========================================
+export type RedirectType = '301' | '302' | '307' | '308' | '410';
+export type RedirectTargetServer =
+  | 'htaccess'
+  | 'nginx'
+  | 'iis'
+  | 'redirects'
+  | 'vercel'
+  | 'nextjs'
+  | 'php';
+
+export interface RedirectRuleItem {
+  id: string;
+  source: string;
+  destination: string;
+  statusCode: RedirectType;
+  exactMatch: boolean;
+  caseInsensitive: boolean;
+  notes?: string;
+}
+
+export interface CanonicalRedirectConfig {
+  forceHttps: boolean;
+  domainName: string;
+  forceWwwMode: 'keep' | 'force-www' | 'force-non-www';
+  trailingSlashMode: 'keep' | 'force-slash' | 'remove-slash';
+  lowercaseUrls: boolean;
+  blockBadBots: boolean;
+  blockHiddenFiles: boolean;
+  enableCorsAll: boolean;
+  customHeaderRules?: Array<{ name: string; value: string }>;
+}
 
 export interface LlmsLinkItem {
   id: string;

@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SerpSimulatorStudio } from '../components/SerpSimulatorStudio';
+---
+
+<BaseLayout
+  title="Simulador de SERP Google & Rich Snippets Studio - Teste de Pixels & CTR"
+  description="Simulador de resultados do Google Desktop e Mobile em tempo real. Teste larguras de pixel (580px), corte de títulos, CTR score, estrelas de avaliação, rich snippets de produto e FAQ."
+  currentPath="/serp-simulator"
+>
+  <SerpSimulatorStudio client:only="react" />
+</BaseLayout>

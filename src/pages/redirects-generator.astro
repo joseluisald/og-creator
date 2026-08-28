@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { RedirectsGeneratorStudio } from '../components/RedirectsGeneratorStudio';
+---
+
+<BaseLayout
+  title="Gerador de Redirecionamentos 301 & Regras .htaccess, Nginx e IIS web.config"
+  description="Crie regras de redirecionamento 301/302, padronização canônica (HTTPS, www vs não-www, trailing slash) e bloqueio de bots maliciosos para Apache (.htaccess), Nginx, IIS (web.config), Vercel e Cloudflare."
+  currentPath="/redirects-generator"
+>
+  <RedirectsGeneratorStudio client:only="react" />
+</BaseLayout>

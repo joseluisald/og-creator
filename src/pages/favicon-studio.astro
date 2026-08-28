@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { FaviconStudio } from '../components/FaviconStudio';
+---
+
+<BaseLayout
+  title="Gerador de Favicon & Web Manifest Studio - Pacote Completo PWA & Ícones"
+  description="Crie e baixe favicons em todos os tamanhos (ICO, PNG 16x16, 32x32, 192x192, 512x512, Apple Touch Icon), gere seu site.webmanifest para PWA e tags de cabeçalho HTML com 1 clique."
+  currentPath="/favicon-studio"
+>
+  <FaviconStudio client:only="react" />
+</BaseLayout>

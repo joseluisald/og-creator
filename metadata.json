@@ -1,6 +1,6 @@
 {
   "name": "OG Image Generator",
-  "description": "Estúdio web completo com Gerador de OG Image (1200x630), Meta Tags & Schema.org Studio, Robots.txt & Sitemap Generator, e Gerador de llms.txt / llms-full.txt para Agentes de IA.",
+  "description": "Suíte Web & SEO completa: Simulador de SERP Google & Rich Snippets Studio, Gerador de Favicon & Web Manifest PWA, Headers HTTP de Segurança, Gerador de Redirecionamentos (.htaccess/Nginx/IIS), OG Image Studio, Meta Tags & Schema, e llms.txt.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

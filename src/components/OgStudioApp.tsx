@@ -67,7 +67,7 @@ export const OgStudioApp: React.FC = () => {
   const [watermarkConfig, setWatermarkConfig] = useState<WatermarkConfig>(initialSaved.watermark);
 
   // UI state
-  const [activeTab, setActiveTab] = useState<'bg' | 'kv' | 'overlay' | 'watermark'>('overlay');
+  const [activeTab, setActiveTab] = useState<'bg' | 'kv' | 'overlay' | 'watermark'>('bg');
   const [showGuides, setShowGuides] = useState<boolean>(initialSaved.guides);
   const [isRendering, setIsRendering] = useState<boolean>(false);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState<boolean>(false);

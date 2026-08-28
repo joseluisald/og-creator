@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SecurityHeadersStudio } from '../components/SecurityHeadersStudio';
+---
+
+<BaseLayout
+  title="Validador & Gerador de Headers HTTP de Segurança - CSP, HSTS & IIS / Nginx"
+  description="Audite e gere cabeçalhos HTTP de segurança de nível bancário: Content-Security-Policy (CSP), HSTS, X-Frame-Options, X-Content-Type-Options para Nginx, Apache (.htaccess), IIS (web.config), Vercel e Cloudflare."
+  currentPath="/security-headers"
+>
+  <SecurityHeadersStudio client:only="react" />
+</BaseLayout>

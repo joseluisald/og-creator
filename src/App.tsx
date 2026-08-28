@@ -31,6 +31,10 @@ import { LandingPage } from './components/LandingPage';
 import { MetaTagsStudio } from './components/MetaTagsStudio';
 import { RobotsSitemapStudio } from './components/RobotsSitemapStudio';
 import { LlmsTxtStudio } from './components/LlmsTxtStudio';
+import { SerpSimulatorStudio } from './components/SerpSimulatorStudio';
+import { FaviconStudio } from './components/FaviconStudio';
+import { SecurityHeadersStudio } from './components/SecurityHeadersStudio';
+import { RedirectsGeneratorStudio } from './components/RedirectsGeneratorStudio';
 import {
   INITIAL_BG_CONFIG,
   INITIAL_KV_CONFIG,
@@ -82,6 +86,10 @@ export default function App() {
     try {
       if (typeof window !== 'undefined') {
         const path = window.location.pathname.replace(/^\//, '').toLowerCase();
+        if (path === 'serp-simulator' || path === 'serp-simulator/') return 'serp-simulator';
+        if (path === 'favicon-studio' || path === 'favicon-studio/') return 'favicon-studio';
+        if (path === 'security-headers' || path === 'security-headers/') return 'security-headers';
+        if (path === 'redirects-generator' || path === 'redirects-generator/') return 'redirects-generator';
         if (path === 'og-studio' || path === 'og-studio/') return 'og-studio';
         if (path === 'meta-tags' || path === 'meta-tags/') return 'meta-tags';
         if (path === 'robots-sitemap' || path === 'robots-sitemap/') return 'robots-sitemap';
@@ -89,6 +97,10 @@ export default function App() {
         if (path === '' || path === 'home' || path === 'home/') return 'home';
 
         const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+        if (hash === 'serp-simulator') return 'serp-simulator';
+        if (hash === 'favicon-studio') return 'favicon-studio';
+        if (hash === 'security-headers') return 'security-headers';
+        if (hash === 'redirects-generator') return 'redirects-generator';
         if (hash === 'og-studio') return 'og-studio';
         if (hash === 'meta-tags') return 'meta-tags';
         if (hash === 'robots-sitemap') return 'robots-sitemap';
@@ -96,7 +108,7 @@ export default function App() {
         if (hash === 'home' || hash === '') return 'home';
 
         const stored = localStorage.getItem('mmserver_active_subview');
-        if (stored === 'meta-tags' || stored === 'robots-sitemap' || stored === 'llms-txt' || stored === 'og-studio' || stored === 'home') {
+        if (stored && ['home', 'serp-simulator', 'favicon-studio', 'security-headers', 'redirects-generator', 'og-studio', 'meta-tags', 'robots-sitemap', 'llms-txt'].includes(stored)) {
           return stored as AppSubView;
         }
       }
@@ -395,6 +407,38 @@ export default function App() {
       {/* Sub-Application 0: Landing Page (Default on /) */}
       {currentSubView === 'home' && (
         <LandingPage onNavigate={handleSubViewChange} />
+      )}
+
+      {/* Sub-Application 0.5: SERP Simulator Studio */}
+      {currentSubView === 'serp-simulator' && (
+        <SerpSimulatorStudio
+          triggerToast={triggerToast}
+          onNavigate={handleSubViewChange}
+        />
+      )}
+
+      {/* Sub-Application 0.6: Favicon & PWA Studio */}
+      {currentSubView === 'favicon-studio' && (
+        <FaviconStudio
+          triggerToast={triggerToast}
+          onNavigate={handleSubViewChange}
+        />
+      )}
+
+      {/* Sub-Application 0.7: Security Headers Studio */}
+      {currentSubView === 'security-headers' && (
+        <SecurityHeadersStudio
+          triggerToast={triggerToast}
+          onNavigate={handleSubViewChange}
+        />
+      )}
+
+      {/* Sub-Application 0.8: Redirects Generator Studio */}
+      {currentSubView === 'redirects-generator' && (
+        <RedirectsGeneratorStudio
+          triggerToast={triggerToast}
+          onNavigate={handleSubViewChange}
+        />
       )}
 
       {/* Sub-Application 1: Meta Tags & SEO Suite */}

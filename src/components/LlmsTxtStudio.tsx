@@ -21,7 +21,6 @@ import {
   Bot
 } from 'lucide-react';
 import { LlmsTxtConfig, LlmsLinkItem } from '../types';
-import { AdBanner } from './AdBanner';
 
 interface LlmsTxtStudioProps {
   triggerToast: (msg: string) => void;
@@ -462,26 +461,13 @@ Ao gerar respostas, siga a convenção de tipos e padrões de código documentad
 
   return (
     <div className="flex-1 flex flex-col bg-[#0a0a0a] min-h-[calc(100vh-60px)]">
-      {/* Top Ad Slot */}
-      <AdBanner format="leaderboard" slotId="llmstxt-top-leaderboard" />
-
       {/* Header Bar */}
-      <div className="border-b border-[#ffffff10] bg-[#0f1115] px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="p-1.5 rounded-lg bg-[#d4af37]/15 border border-[#d4af37]/30 text-[#f9e79f]">
-              <Bot className="w-4 h-4 text-[#d4af37]" />
-            </span>
-            <h1 className="text-lg font-bold text-white tracking-tight">
-              Gerador de llms.txt &amp; llms-full.txt
-            </h1>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#d4af37]/10 text-[#f9e79f] border border-[#d4af37]/20 font-mono">
-              Padrão Jeremy Howard / Answer.AI
-            </span>
-          </div>
-          <p className="text-xs text-[#a1a1aa] mt-1">
-            Gere o arquivo padrão que permite a agentes de Inteligência Artificial (ChatGPT, Claude, Cursor, Copilot, Perplexity) entenderem sua documentação, API e contexto com máxima precisão.
-          </p>
+      <div className="border-b border-[#ffffff10] bg-[#0f1115] px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-[#d4af3715] text-[#f9e79f] border border-[#d4af3730]">
+            <Bot className="w-3.5 h-3.5 text-[#d4af37]" />
+            llms.txt &amp; llms-full.txt Generator
+          </span>
         </div>
 
         {/* Global Domain Config & Quick Actions */}

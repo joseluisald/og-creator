@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LlmsTxtStudio } from '../components/LlmsTxtStudio';
+---
+
+<BaseLayout
+  title="llms.txt & llms-full.txt Studio - Documentação para Agentes de IA"
+  description="Gere arquivos no padrão oficial llms.txt para Cursor IDE, Copilot, ChatGPT e Claude alimentarem modelos com a documentação do seu projeto."
+  currentPath="/llms-txt"
+>
+  <LlmsTxtStudio
+    client:only="react"
+    triggerToast={(msg) => console.log(msg)}
+    onNavigateToMetaTags={() => { window.location.href = '/meta-tags'; }}
+  />
+</BaseLayout>

@@ -25,7 +25,6 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { AppSubView } from '../types';
-import { AdBanner } from './AdBanner';
 
 interface LandingPageProps {
   onNavigate: (view: AppSubView) => void;
@@ -129,9 +128,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="flex-1 flex flex-col bg-[#0a0a0a] text-[#e5e5e5]">
-      {/* Top Sponsor Leaderboard Ad Banner */}
-      <AdBanner format="leaderboard" slotId="top-home-leaderboard" />
-
       {/* Hero Section */}
       <section className="relative px-4 sm:px-6 pt-10 pb-14 max-w-6xl mx-auto text-center flex flex-col items-center">
         {/* Subtle Background Glow */}
@@ -283,14 +279,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </div>
             );
           })}
-        </div>
-      </section>
-
-      {/* Middle Native Developer Ads & Monetization Section */}
-      <section className="px-4 sm:px-6 py-8 max-w-6xl mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <AdBanner format="native" slotId="home-mid-sponsor-1" />
-          <AdBanner format="native" slotId="home-mid-sponsor-2" />
         </div>
       </section>
 

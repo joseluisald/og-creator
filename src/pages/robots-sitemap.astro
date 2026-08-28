@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { RobotsSitemapStudio } from '../components/RobotsSitemapStudio';
+---
+
+<BaseLayout
+  title="Robots.txt, Sitemap.xml & AI Bot Shield Studio"
+  description="Bloqueie robôs de IA indesejados (GPTBot, ClaudeBot, PerplexityBot), gere sitemaps XML e crie arquivos security.txt (RFC 9116)."
+  currentPath="/robots-sitemap"
+>
+  <RobotsSitemapStudio
+    client:only="react"
+    triggerToast={(msg) => console.log(msg)}
+    onNavigateToMetaTags={() => { window.location.href = '/meta-tags'; }}
+  />
+</BaseLayout>

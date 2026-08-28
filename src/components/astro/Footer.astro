@@ -1,0 +1,56 @@
+---
+import { Sparkles, Share2 } from 'lucide-astro';
+---
+
+<footer class="border-t border-[#ffffff10] bg-[#0c0d10] py-8 px-6 mt-auto text-xs text-[#71717a]">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded-md bg-[#d4af37] flex items-center justify-center text-black font-bold text-xs">
+        <Sparkles class="w-3.5 h-3.5" />
+      </div>
+      <span class="font-semibold text-white">Web &amp; SEO Studio</span>
+      <span>— Suíte de Ferramentas Web Desenvolvida em Astro</span>
+    </div>
+
+    <div class="flex items-center gap-4 flex-wrap">
+      <a href="/og-studio" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
+        OG Studio
+      </a>
+      <a href="/meta-tags" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
+        Meta Tags
+      </a>
+      <a href="/robots-sitemap" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
+        Robots &amp; Sitemap
+      </a>
+      <a href="/llms-txt" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
+        llms.txt Studio
+      </a>
+      <button
+        type="button"
+        id="share-button-footer"
+        class="text-[#d4af37] hover:underline flex items-center gap-1 cursor-pointer font-semibold bg-transparent border-0"
+      >
+        <Share2 class="w-3 h-3" />
+        <span>Compartilhar</span>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const shareBtn = document.getElementById('share-button-footer');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Web & SEO Studio - Suíte Grátis para Webmasters',
+          text: 'Gere imagens OG, Meta Tags, Robots.txt e llms.txt gratuitamente!',
+          url: window.location.origin,
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(window.location.origin);
+        alert('Link copiado para a área de transferência!');
+      }
+    });
+  }
+</script>

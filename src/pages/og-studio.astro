@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { OgStudioApp } from '../components/OgStudioApp';
+---
+
+<BaseLayout
+  title="OG Image Studio - Gerador de Banners Open Graph (1200x630)"
+  description="Crie imagens de compartilhamento social (1200x630) em alta resolução com presets de gradientes, logos e exportação rápida em PNG."
+  currentPath="/og-studio"
+>
+  <OgStudioApp client:only="react" />
+</BaseLayout>

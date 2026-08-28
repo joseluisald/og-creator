@@ -29,7 +29,6 @@ import {
   Eye
 } from 'lucide-react';
 import { RobotsConfig, SitemapUrlItem, AiBotRule } from '../types';
-import { AdBanner } from './AdBanner';
 
 interface RobotsSitemapStudioProps {
   triggerToast: (msg: string) => void;
@@ -602,26 +601,13 @@ module.exports = {
 
   return (
     <div className="flex-1 flex flex-col bg-[#0a0a0a] min-h-[calc(100vh-60px)]">
-      {/* Top Ad Slot */}
-      <AdBanner format="leaderboard" slotId="robots-top-leaderboard" />
-
       {/* Sub-Header Bar */}
-      <div className="border-b border-[#ffffff10] bg-[#0f1115] px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="p-1.5 rounded-lg bg-[#d4af37]/15 border border-[#d4af37]/30 text-[#f9e79f]">
-              <ShieldAlert className="w-4 h-4 text-[#d4af37]" />
-            </span>
-            <h1 className="text-lg font-bold text-white tracking-tight">
-              Robots.txt, Sitemap.xml & AI Bot Shield
-            </h1>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#d4af37]/10 text-[#f9e79f] border border-[#d4af37]/20 font-mono">
-              SEO Técnico & Proteção
-            </span>
-          </div>
-          <p className="text-xs text-[#a1a1aa] mt-1">
-            Gere arquivos de indexação técnica, sitemaps XML válidos e blinde seu site contra raspagem não autorizada de modelos de IA (OpenAI, Gemini, Anthropic).
-          </p>
+      <div className="border-b border-[#ffffff10] bg-[#0f1115] px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-[#d4af3715] text-[#f9e79f] border border-[#d4af3730]">
+            <ShieldAlert className="w-3.5 h-3.5 text-[#d4af37]" />
+            Robots.txt, Sitemap &amp; AI Shield
+          </span>
         </div>
 
         {/* Global Domain Config & Quick Actions */}

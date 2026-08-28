@@ -33,7 +33,6 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { FrameworkType, MetaTagsConfig, OgType, SchemaType, TwitterCardType } from '../types';
-import { AdBanner } from './AdBanner';
 import {
   INITIAL_METATAGS_CONFIG,
   auditSeoConfig,
@@ -61,8 +60,10 @@ export const MetaTagsStudio: React.FC<MetaTagsStudioProps> = ({
 }) => {
   const [config, setConfig] = useState<MetaTagsConfig>(() => {
     try {
-      const saved = localStorage.getItem('mmserver_metatags_saved_config');
-      if (saved) return JSON.parse(saved);
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('mmserver_metatags_saved_config');
+        if (saved) return JSON.parse(saved);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -86,7 +87,9 @@ export const MetaTagsStudio: React.FC<MetaTagsStudioProps> = ({
     setConfig((prev) => {
       const next = { ...prev, ...updated };
       try {
-        localStorage.setItem('mmserver_metatags_saved_config', JSON.stringify(next));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('mmserver_metatags_saved_config', JSON.stringify(next));
+        }
       } catch (e) {
         console.error(e);
       }
@@ -262,28 +265,13 @@ export const MetaTagsStudio: React.FC<MetaTagsStudioProps> = ({
 
   return (
     <div className="w-full min-h-screen bg-[#0a0a0a] text-[#e5e5e5] flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
-      {/* Top Ad Slot */}
-      <AdBanner format="leaderboard" slotId="metatags-top-leaderboard" />
-
       {/* Top Banner / Sub-App Toolbar */}
-      <div className="px-6 py-4 border-b border-[#ffffff10] bg-[#121418]/90 backdrop-blur-md sticky top-0 z-30 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#d4af37]/20 to-[#f9e79f]/10 border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37] shadow-md shadow-[#d4af3715]">
-            <Code2 className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-[#f9e79f] tracking-wide font-['Cormorant_Garamond',serif] italic">
-                Suíte de Meta Tags, Social Cards &amp; SEO
-              </h2>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-[#d4af37]/15 text-[#f9e79f] border border-[#d4af37]/30">
-                PRO v2.0
-              </span>
-            </div>
-            <p className="text-xs text-[#71717a]">
-              Gerador completo para HTML5, Next.js, Astro, Nuxt, SvelteKit, Remix e Schema.org
-            </p>
-          </div>
+      <div className="px-6 py-2.5 border-b border-[#ffffff10] bg-[#121418]/90 backdrop-blur-md sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-[#d4af3715] text-[#f9e79f] border border-[#d4af3730]">
+            <Code2 className="w-3.5 h-3.5 text-[#d4af37]" />
+            Meta Tags &amp; SEO Generator
+          </span>
         </div>
 
         {/* Quick Actions & Sync */}

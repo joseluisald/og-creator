@@ -28,7 +28,6 @@ import { TemplatesModal } from './components/TemplatesModal';
 import { BgConfig, KvConfig, PresetTemplate, TextOverlayConfig, WatermarkConfig, AppSubView } from './types';
 import { AppNavigation } from './components/AppNavigation';
 import { LandingPage } from './components/LandingPage';
-import { AdBanner } from './components/AdBanner';
 import { MetaTagsStudio } from './components/MetaTagsStudio';
 import { RobotsSitemapStudio } from './components/RobotsSitemapStudio';
 import { LlmsTxtStudio } from './components/LlmsTxtStudio';
@@ -50,13 +49,16 @@ const STORAGE_SAVED_CONFIG_KEY = 'mmserver_og_studio_saved_config';
 
 function loadSavedStudioConfig() {
   try {
-    const raw = localStorage.getItem(STORAGE_SAVED_CONFIG_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw);
+    if (typeof window !== 'undefined') {
+      const raw = localStorage.getItem(STORAGE_SAVED_CONFIG_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    }
   } catch (err) {
     console.error('Failed to load saved config:', err);
     return null;
   }
+  return null;
 }
 
 export default function App() {
@@ -78,23 +80,25 @@ export default function App() {
   // Parse initial route from pathname or hash
   const parseCurrentRoute = (): AppSubView => {
     try {
-      const path = window.location.pathname.replace(/^\//, '').toLowerCase();
-      if (path === 'og-studio' || path === 'og-studio/') return 'og-studio';
-      if (path === 'meta-tags' || path === 'meta-tags/') return 'meta-tags';
-      if (path === 'robots-sitemap' || path === 'robots-sitemap/') return 'robots-sitemap';
-      if (path === 'llms-txt' || path === 'llms-txt/') return 'llms-txt';
-      if (path === '' || path === 'home' || path === 'home/') return 'home';
+      if (typeof window !== 'undefined') {
+        const path = window.location.pathname.replace(/^\//, '').toLowerCase();
+        if (path === 'og-studio' || path === 'og-studio/') return 'og-studio';
+        if (path === 'meta-tags' || path === 'meta-tags/') return 'meta-tags';
+        if (path === 'robots-sitemap' || path === 'robots-sitemap/') return 'robots-sitemap';
+        if (path === 'llms-txt' || path === 'llms-txt/') return 'llms-txt';
+        if (path === '' || path === 'home' || path === 'home/') return 'home';
 
-      const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
-      if (hash === 'og-studio') return 'og-studio';
-      if (hash === 'meta-tags') return 'meta-tags';
-      if (hash === 'robots-sitemap') return 'robots-sitemap';
-      if (hash === 'llms-txt') return 'llms-txt';
-      if (hash === 'home' || hash === '') return 'home';
+        const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+        if (hash === 'og-studio') return 'og-studio';
+        if (hash === 'meta-tags') return 'meta-tags';
+        if (hash === 'robots-sitemap') return 'robots-sitemap';
+        if (hash === 'llms-txt') return 'llms-txt';
+        if (hash === 'home' || hash === '') return 'home';
 
-      const stored = localStorage.getItem('mmserver_active_subview');
-      if (stored === 'meta-tags' || stored === 'robots-sitemap' || stored === 'llms-txt' || stored === 'og-studio' || stored === 'home') {
-        return stored as AppSubView;
+        const stored = localStorage.getItem('mmserver_active_subview');
+        if (stored === 'meta-tags' || stored === 'robots-sitemap' || stored === 'llms-txt' || stored === 'og-studio' || stored === 'home') {
+          return stored as AppSubView;
+        }
       }
     } catch (e) {
       console.error(e);
@@ -276,8 +280,8 @@ export default function App() {
   };
 
   const handleSelectTemplate = (tmpl: PresetTemplate) => {
-    setBgConfig(tmpl.bgConfig);
-    setKvConfig(tmpl.kvConfig);
+    setBgConfig({ ...INITIAL_BG_CONFIG, ...tmpl.bgConfig });
+    setKvConfig({ ...INITIAL_KV_CONFIG, ...tmpl.kvConfig });
     if (tmpl.textOverlay) {
       setTextOverlay((prev) => ({ ...prev, ...tmpl.textOverlay }));
     }
@@ -524,9 +528,6 @@ export default function App() {
                     onFileUpload={handleWatermarkFileUpload}
                   />
                 )}
-
-                {/* Sidebar Ad Slot */}
-                <AdBanner format="sidebar" className="mt-6" slotId="og-sidebar-ad" />
               </div>
             </aside>
 
@@ -541,7 +542,6 @@ export default function App() {
                 onToggleGuides={() => setShowGuides((prev) => !prev)}
                 isRendering={isRendering}
               />
-              <AdBanner format="leaderboard" className="mt-4" slotId="og-bottom-leaderboard" />
             </section>
           </main>
 

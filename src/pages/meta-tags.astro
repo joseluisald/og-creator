@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { MetaTagsStudio } from '../components/MetaTagsStudio';
+---
+
+<BaseLayout
+  title="Meta Tags & Schema Studio - HTML5, Open Graph & JSON-LD"
+  description="Gere Meta Tags para 9 frameworks (Next.js, Astro, Nuxt, SvelteKit), Twitter Cards e Schema.org com validação e SERP preview."
+  currentPath="/meta-tags"
+>
+  <MetaTagsStudio
+    client:only="react"
+    triggerToast={(msg) => console.log(msg)}
+    onNavigateToOgStudio={() => { window.location.href = '/og-studio'; }}
+  />
+</BaseLayout>

@@ -111,9 +111,6 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 hidden md:inline">
-          100% Grátis · Sem Login
-        </span>
       </div>
     </nav>
   );

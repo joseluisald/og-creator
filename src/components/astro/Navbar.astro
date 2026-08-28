@@ -1,0 +1,64 @@
+---
+import { Sparkles, Image as ImageIcon, Code2, ShieldAlert, Bot, Home } from 'lucide-astro';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navItems = [
+  { href: '/', label: 'Início', icon: Home },
+  { href: '/og-studio', label: 'OG Image', icon: ImageIcon, badge: '1200×630' },
+  { href: '/meta-tags', label: 'Meta Tags', icon: Code2, badge: 'Schema' },
+  { href: '/robots-sitemap', label: 'Robots & Sitemap', icon: ShieldAlert, badge: 'IA Shield' },
+  { href: '/llms-txt', label: 'llms.txt Studio', icon: Bot, badge: 'NOVO', isNew: true },
+];
+---
+
+<nav class="w-full bg-[#0a0a0a] border-b border-[#ffffff10] px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs z-40 sticky top-0 backdrop-blur-md bg-opacity-95">
+  {/* Brand */}
+  <div class="flex items-center gap-3 sm:gap-6 flex-wrap">
+    <a
+      href="/"
+      class="flex items-center gap-2 cursor-pointer group text-decoration-none"
+      title="Ir para a Página Inicial"
+    >
+      <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#d4af37] to-[#f9e79f] flex items-center justify-center shadow-md shadow-[#d4af3720] group-hover:scale-105 transition-transform">
+        <Sparkles class="w-4 h-4 text-black" />
+      </div>
+      <span class="font-semibold text-sm text-[#f9e79f] font-['Cormorant_Garamond',serif] italic tracking-wide hidden sm:inline group-hover:text-white transition">
+        Web &amp; SEO Studio
+      </span>
+    </a>
+
+    {/* Sub-Applications Tabs with Clean Routes */}
+    <div class="bg-[#14161b] p-1 rounded-2xl border border-[#ffffff10] flex items-center gap-1 shadow-inner flex-wrap">
+      {navItems.map((item) => {
+        const IconComponent = item.icon;
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        return (
+          <a
+            href={item.href}
+            class={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl font-semibold transition cursor-pointer text-decoration-none ${
+              isActive
+                ? 'bg-[#d4af37] text-black shadow-md shadow-[#d4af3725]'
+                : 'text-[#a1a1aa] hover:text-[#e5e5e5] hover:bg-[#1f2228]'
+            }`}
+          >
+            <IconComponent class="w-3.5 h-3.5" />
+            <span>{item.label}</span>
+            {item.isNew && (
+              <span class="px-1.5 py-0.2 rounded-md bg-[#d4af37]/20 text-[#f9e79f] text-[9px] font-mono font-bold">
+                NOVO
+              </span>
+            )}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2">
+  </div>
+</nav>

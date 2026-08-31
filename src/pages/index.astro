@@ -17,25 +17,28 @@ import {
   HelpCircle,
   Smile,
   ShieldCheck,
-  ArrowRightLeft
+  ArrowRightLeft,
+  LayoutGrid
 } from 'lucide-astro';
 
 const SUB_APPS = [
   {
     id: 'serp-simulator',
-    title: 'Simulador de SERP Google & Rich Snippets Studio',
+    title: 'Simulador de SERP Google & Rich Snippets',
     route: '/serp-simulator',
-    badge: 'Desktop, Mobile & CTR Booster',
-    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    categoryLabel: 'SEO & Busca',
+    badge: 'Desktop & Mobile',
+    badgeColor: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
     icon: Search,
     iconBg: 'from-amber-400 to-orange-500',
     description:
-      'Simule e otimize exatamente como seu site aparece nas buscas do Google (Desktop e Mobile). Teste limites de pixels (580px), corte de títulos, estrelas de avaliação, preço de produtos e snippets de FAQ.',
+      'Simule e otimize exatamente como seu site aparece nas buscas do Google (Desktop e Mobile). Teste limites de corte em 580px, estrelas de avaliação, preços de produtos e FAQ Accordion.',
+    techTags: ['Google 580px', 'Mobile & Desktop', 'CTR Score', 'Rich Snippets', 'Dark/Light'],
     highlights: [
       'Contador de largura de pixels real para título (580px) e descrição (960px)',
       'Simulador visual do Google com alternância Dark Mode e Light Mode',
-      'Ativação de Rich Snippets: Estrelas de Avaliação (★★★★★), Preços e FAQ Accordion',
-      'Diagnóstico de CTR Score com detecção de Power Words, números e colchetes'
+      'Ativação de Rich Snippets: Estrelas de Avaliação (★★★★★), Preços e FAQ',
+      'Diagnóstico de CTR Score com detecção de Power Words e números'
     ],
     cta: 'Simular SERP do Google'
   },
@@ -43,16 +46,18 @@ const SUB_APPS = [
     id: 'favicon-studio',
     title: 'Favicon & Web Manifest Studio',
     route: '/favicon-studio',
-    badge: 'Pacote Completo PWA & Ícones',
-    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    categoryLabel: 'Design & Ativos',
+    badge: 'Pacote PWA Completo',
+    badgeColor: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
     icon: Smile,
     iconBg: 'from-emerald-400 to-teal-500',
     description:
       'Crie favicons profissionais a partir de emojis, texto ou imagens e gere o pacote completo com favicon.ico, PNGs (16x16 até 512x512), Apple Touch Icon e site.webmanifest para PWA.',
+    techTags: ['favicon.ico', 'Apple Touch Icon', 'site.webmanifest', 'ZIP 1-Clique', 'PWA Ready'],
     highlights: [
       'Exportação instantânea de arquivo ZIP com todos os tamanhos oficiais',
       'Editor de site.webmanifest para aplicativos web progressivos (PWA)',
-      'Pré-visualização ao vivo em abas do Chrome (Dark/Light) e Home Screen de smartphones',
+      'Pré-visualização em abas do Chrome e Home Screen de smartphones',
       'Tags HTML <head> prontas para Next.js, Astro e HTML5'
     ],
     cta: 'Criar Favicon & Manifest'
@@ -61,16 +66,18 @@ const SUB_APPS = [
     id: 'security-headers',
     title: 'Headers HTTP de Segurança',
     route: '/security-headers',
-    badge: 'CSP, HSTS & IIS / Nginx',
-    badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40',
+    categoryLabel: 'Infra & Segurança',
+    badge: 'CSP, HSTS & Grade A+',
+    badgeColor: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
     icon: ShieldCheck,
     iconBg: 'from-indigo-400 to-blue-600',
     description:
-      'Audite e configure cabeçalhos HTTP de segurança de nível bancário: Content-Security-Policy (CSP), HSTS, X-Frame-Options, X-Content-Type-Options para Apache, Nginx, IIS (web.config) e Vercel.',
+      'Audite e configure cabeçalhos HTTP de segurança de nível bancário: Content-Security-Policy (CSP), HSTS, X-Frame-Options e X-Content-Type-Options para Nginx, Apache, IIS e Vercel.',
+    techTags: ['CSP Level 3', 'HSTS Preload', 'X-Frame-Options', 'Nginx / Apache', 'IIS web.config'],
     highlights: [
       'Auditoria ao vivo de cabeçalhos de segurança com nota de A+ a F',
       'Presets de CSP para SaaS, Bancos, Next.js, GA4 e Google Tag Manager',
-      'Geração de código em 1-clique para Nginx, Apache (.htaccess), IIS (web.config) e Express',
+      'Geração de código em 1-clique para Nginx, Apache (.htaccess), IIS e Express',
       'Proteção contra XSS, Clickjacking, MIME Sniffing e vazamento de dados'
     ],
     cta: 'Gerar Headers de Segurança'
@@ -79,12 +86,14 @@ const SUB_APPS = [
     id: 'redirects-generator',
     title: 'Gerador de Redirecionamentos 301',
     route: '/redirects-generator',
-    badge: '.htaccess, Nginx & IIS web.config',
-    badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+    categoryLabel: 'Infra & Servidor',
+    badge: '301 / 302 & Anti-Leak',
+    badgeColor: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
     icon: ArrowRightLeft,
     iconBg: 'from-cyan-400 to-blue-500',
     description:
       'Crie regras de redirecionamento 301/302 individuais ou em massa, padronização canônica (HTTPS, www vs sem www, trailing slash) e bloqueio de bots maliciosos para qualquer servidor web.',
+    techTags: ['.htaccess', 'Nginx Conf', 'IIS web.config', 'HTTPS Forçado', 'Lote em Massa'],
     highlights: [
       'Geração para Apache (.htaccess), Nginx, IIS (web.config), Vercel e Cloudflare',
       'Importação em lote de dezenas de URLs via copiar e colar',
@@ -97,12 +106,14 @@ const SUB_APPS = [
     id: 'og-studio',
     title: 'OG Image Studio',
     route: '/og-studio',
-    badge: 'Visual Canvas 1200×630',
-    badgeColor: 'bg-[#d4af37]/20 text-[#f9e79f] border-[#d4af37]/40',
+    categoryLabel: 'Design & Social',
+    badge: 'Canvas 1200×630',
+    badgeColor: 'bg-[#d4af37]/15 text-[#f9e79f] border-[#d4af37]/30',
     icon: ImageIcon,
     iconBg: 'from-[#d4af37] to-[#f9e79f]',
     description:
       'Crie banners e imagens Open Graph profissionais (1200x630 px) em alta resolução com presets de gradientes, logos, tags, tipografia fina e download imediato em PNG.',
+    techTags: ['1200×630 px', 'WhatsApp / Discord', 'Twitter Card', 'Upload de Logo', 'Download PNG'],
     highlights: [
       'Resolução exata 1200×630 recomendada por Facebook, Twitter e WhatsApp',
       'Controle fino de cores, gradientes dourados, overlays e tipografia de luxo',
@@ -115,17 +126,19 @@ const SUB_APPS = [
     id: 'meta-tags',
     title: 'Meta Tags & Schema Studio',
     route: '/meta-tags',
-    badge: '9 Frameworks + Google SERP',
-    badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
+    categoryLabel: 'SEO & Código',
+    badge: '9 Frameworks + Schema',
+    badgeColor: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
     icon: Code2,
     iconBg: 'from-blue-500 to-indigo-400',
     description:
       'Gerador completo de Meta Tags HTML5, Open Graph, Twitter Cards, WhatsApp/Discord e marcações estruturadas Schema.org / JSON-LD com suporte a 9 frameworks modernos.',
+    techTags: ['Schema JSON-LD', 'Next.js Metadata', 'Astro / Nuxt', 'Open Graph', 'Twitter Cards'],
     highlights: [
-      'Snippets prontos para Next.js App Router (metadata API), Astro, Nuxt 3, SvelteKit, Remix e HTML5',
+      'Snippets prontos para Next.js App Router, Astro, Nuxt 3, SvelteKit e HTML5',
       'Simulador visual interativo de Google SERP, Twitter/X Cards e WhatsApp',
-      'Gerador de Schema.org: SoftwareApplication, Article, WebSite, Product e FAQPage',
-      'Auditoria instantânea de tamanho ideal de título (50-60 car) e descrição (150-160 car)'
+      'Gerador de Schema.org: SoftwareApplication, Article, WebSite e FAQPage',
+      'Auditoria instantânea de tamanho de título e descrição'
     ],
     cta: 'Gerar Meta Tags'
   },
@@ -133,17 +146,19 @@ const SUB_APPS = [
     id: 'robots-sitemap',
     title: 'Robots, Sitemap & IA Shield',
     route: '/robots-sitemap',
-    badge: 'SEO Técnico & Anti-Scraping',
-    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    categoryLabel: 'SEO & Anti-Scraping',
+    badge: 'Robots.txt & Sitemap',
+    badgeColor: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
     icon: ShieldAlert,
-    iconBg: 'from-emerald-500 to-teal-400',
+    iconBg: 'from-rose-500 to-red-600',
     description:
       'Proteja seu site contra raspagem não autorizada por IAs (GPTBot, ClaudeBot, PerplexityBot), gere Sitemaps XML visuais e configure arquivos de segurança RFC 9116.',
+    techTags: ['Anti-IA Scrapers', 'sitemap.xml', 'security.txt', 'Crawler Sim', 'Next.js Route'],
     highlights: [
-      'Bloqueio seletivo de 10+ robôs de IA (OpenAI, Anthropic, Google Gemini, Meta, ByteDance)',
-      'Gerador de sitemap.xml com prioridades (1.0, 0.8), frequências e exportação para Next.js',
-      'Simulador de Crawlers em tempo real: teste se rotas como /admin ou /api estão bloqueadas',
-      'Gerador de security.txt (RFC 9116) e cabeçalhos HTTP recomendados (CSP, HSTS)'
+      'Bloqueio seletivo de 10+ robôs de IA (OpenAI, Anthropic, Google, Meta, ByteDance)',
+      'Gerador de sitemap.xml com prioridades (1.0, 0.8) e frequências',
+      'Simulador de Crawlers em tempo real: teste se rotas estão bloqueadas',
+      'Gerador de security.txt (RFC 9116) e cabeçalhos HTTP recomendados'
     ],
     cta: 'Configurar Robots & Sitemap'
   },
@@ -151,17 +166,19 @@ const SUB_APPS = [
     id: 'llms-txt',
     title: 'llms.txt & llms-full.txt Studio',
     route: '/llms-txt',
-    badge: 'Novo Padrão para IAs',
-    badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+    categoryLabel: 'IA & Contexto',
+    badge: 'Padrão Answer.AI',
+    badgeColor: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
     icon: Bot,
     iconBg: 'from-purple-500 to-pink-400',
     description:
       'Crie arquivos no padrão oficial Answer.AI / Jeremy Howard para que assistentes de IA (ChatGPT, Claude, Cursor IDE, Copilot, Perplexity) compreendam sua documentação e APIs.',
+    techTags: ['/llms.txt', '/llms-full.txt', '.cursorrules', 'Token Estimator', 'Answer.AI Standard'],
     highlights: [
-      'Geração de /llms.txt (índice estruturado em Markdown) e /llms-full.txt (contexto unificado)',
-      'Presets prontos para SaaS, APIs/SDKs de desenvolvedores e Manuais DevOps',
-      'Exportação de regras para Cursor IDE (.cursorrules) e Route Handlers do Next.js',
-      'Contador de caracteres e estimativa de tokens para planejar janelas de contexto'
+      'Geração de /llms.txt (índice em Markdown) e /llms-full.txt (contexto unificado)',
+      'Presets prontos para SaaS, APIs/SDKs de desenvolvedores e Manuais',
+      'Exportação de regras para Cursor IDE (.cursorrules) e Next.js Route Handlers',
+      'Contador de caracteres e estimativa de tokens para janelas de contexto'
     ],
     cta: 'Criar llms.txt'
   }
@@ -177,12 +194,6 @@ const SUB_APPS = [
   <section class="relative px-4 sm:px-6 pt-10 pb-14 max-w-6xl mx-auto text-center flex flex-col items-center">
     {/* Subtle Background Glow */}
     <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[300px] bg-gradient-to-tr from-[#d4af37]/10 via-[#d4af37]/5 to-transparent blur-3xl pointer-events-none rounded-full" />
-
-    {/* Pill Tag */}
-    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14161b] border border-[#d4af37]/30 text-[#f9e79f] text-xs font-semibold mb-6 shadow-sm">
-      <Sparkles class="w-3.5 h-3.5 text-[#d4af37]" />
-      <span>Construído com Astro · 100% Gratuito · Sem Cadastro</span>
-    </div>
 
     {/* Main Display Headline */}
     <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] max-w-4xl">
@@ -235,70 +246,166 @@ const SUB_APPS = [
       </div>
     </div>
 
-    {/* Main Action Buttons */}
-    <div class="flex flex-wrap items-center justify-center gap-3 mt-6 w-full">
+    {/* Main Action Buttons - Luxury Interactive App Selector Grid */}
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mt-8 w-full max-w-4xl">
       <a
         href="/serp-simulator"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-semibold transition cursor-pointer text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-amber-500/30 hover:border-amber-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-amber-500/10 hover:-translate-y-0.5"
       >
-        <Search class="w-3.5 h-3.5 text-amber-400" />
-        <span>Simulador SERP</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+            <Search class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
+            580px
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-amber-300 transition-colors text-left">
+          Simulador SERP
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          Google Desktop &amp; Mobile
+        </span>
       </a>
 
       <a
         href="/favicon-studio"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-emerald-500/50 text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-emerald-500/30 hover:border-emerald-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-emerald-500/10 hover:-translate-y-0.5"
       >
-        <Smile class="w-3.5 h-3.5 text-emerald-400" />
-        <span>Favicon &amp; PWA</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+            <Smile class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+            PWA
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-300 transition-colors text-left">
+          Favicon &amp; PWA
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          .ico, Apple &amp; Manifest ZIP
+        </span>
       </a>
 
       <a
         href="/security-headers"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-indigo-500/50 text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-indigo-500/30 hover:border-indigo-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-indigo-500/10 hover:-translate-y-0.5"
       >
-        <ShieldCheck class="w-3.5 h-3.5 text-indigo-400" />
-        <span>Headers HTTP</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+            <ShieldCheck class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">
+            CSP
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-indigo-300 transition-colors text-left">
+          Headers HTTP
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          HSTS &amp; Web.config / Nginx
+        </span>
       </a>
 
       <a
         href="/redirects-generator"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-cyan-500/50 text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-cyan-500/30 hover:border-cyan-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-cyan-500/10 hover:-translate-y-0.5"
       >
-        <ArrowRightLeft class="w-3.5 h-3.5 text-cyan-400" />
-        <span>Redirecionamentos</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+            <ArrowRightLeft class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300">
+            301
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-cyan-300 transition-colors text-left">
+          Redirecionamentos
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          .htaccess, Nginx &amp; IIS
+        </span>
       </a>
 
       <a
         href="/og-studio"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-[#d4af37]/50 text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-yellow-500/30 hover:border-yellow-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-yellow-500/10 hover:-translate-y-0.5"
       >
-        <ImageIcon class="w-3.5 h-3.5 text-[#d4af37]" />
-        <span>OG Studio</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-yellow-500/15 border border-yellow-500/30 flex items-center justify-center text-yellow-400 group-hover:scale-110 transition-transform">
+            <ImageIcon class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-300">
+            1200×630
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-yellow-300 transition-colors text-left">
+          OG Image Studio
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          Cards para WhatsApp &amp; Twitter
+        </span>
       </a>
 
       <a
         href="/meta-tags"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-blue-500/50 text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-blue-500/30 hover:border-blue-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-blue-500/10 hover:-translate-y-0.5"
       >
-        <Code2 class="w-3.5 h-3.5 text-blue-400" />
-        <span>Meta Tags</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+            <Code2 class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">
+            Schema
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-blue-300 transition-colors text-left">
+          Meta Tags &amp; Schema
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          JSON-LD &amp; 9 Frameworks
+        </span>
       </a>
 
       <a
         href="/robots-sitemap"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-emerald-500/50 text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-rose-500/30 hover:border-rose-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-rose-500/10 hover:-translate-y-0.5"
       >
-        <ShieldAlert class="w-3.5 h-3.5 text-emerald-400" />
-        <span>Robots &amp; Sitemap</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 group-hover:scale-110 transition-transform">
+            <ShieldAlert class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300">
+            Shield
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-rose-300 transition-colors text-left">
+          Robots &amp; Sitemap
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          Bloqueio de Bots de IA
+        </span>
       </a>
 
       <a
         href="/llms-txt"
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#181a20] hover:bg-[#252830] text-white font-semibold text-xs border border-[#ffffff20] transition cursor-pointer hover:border-purple-500/50 text-decoration-none"
+        class="group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl bg-[#14161f]/90 hover:bg-[#1c202d] border border-purple-500/30 hover:border-purple-400/80 transition-all duration-200 text-decoration-none shadow-md shadow-black/20 hover:shadow-purple-500/10 hover:-translate-y-0.5"
       >
-        <Bot class="w-3.5 h-3.5 text-purple-400" />
-        <span>llms.txt</span>
+        <div class="flex items-center justify-between w-full mb-1.5">
+          <div class="w-7 h-7 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+            <Bot class="w-3.5 h-3.5" />
+          </div>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">
+            LLMs
+          </span>
+        </div>
+        <span class="text-xs sm:text-sm font-bold text-white group-hover:text-purple-300 transition-colors text-left">
+          llms.txt Studio
+        </span>
+        <span class="text-[10px] text-[#71717a] group-hover:text-[#a1a1aa] transition-colors text-left truncate w-full">
+          Índice para IA &amp; Cursor
+        </span>
       </a>
     </div>
 
@@ -324,16 +431,16 @@ const SUB_APPS = [
   </section>
 
   {/* Sub-Applications Bento Grid */}
-  <section class="px-4 sm:px-6 py-12 max-w-6xl mx-auto w-full">
+  <section id="ferramentas" class="px-4 sm:px-6 py-14 max-w-6xl mx-auto w-full scroll-mt-20">
     <div class="text-center mb-10">
       <span class="text-[11px] font-mono uppercase tracking-widest text-[#d4af37] font-bold">
-        Cinco Ferramentas Integradas
+        8 Módulos Integrados · 100% Gratuitos
       </span>
-      <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1">
-        Escolha uma das ferramentas abaixo
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-1.5 tracking-tight">
+        Explore a Suíte Completa de Ferramentas
       </h2>
-      <p class="text-sm text-[#a1a1aa] mt-2 max-w-xl mx-auto">
-        Cada módulo foi desenvolvido para resolver uma necessidade técnica crítica de desenvolvedores web, agências e criadores de conteúdo.
+      <p class="text-sm text-[#a1a1aa] mt-2 max-w-2xl mx-auto">
+        Soluções completas e especializadas para SEO técnico, segurança de infraestrutura, imagens otimizadas e compatibilidade com IAs.
       </p>
     </div>
 
@@ -341,30 +448,52 @@ const SUB_APPS = [
       {SUB_APPS.map((app) => {
         const IconComponent = app.icon;
         return (
-          <div class="bg-[#121418] border border-[#ffffff15] hover:border-[#d4af37]/60 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-200 hover:shadow-xl hover:shadow-[#d4af3710] group">
+          <div class="bg-gradient-to-b from-[#12141c] to-[#0c0d12] border border-[#ffffff15] hover:border-[#d4af37]/70 rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-[#d4af3715] group relative overflow-hidden">
+            {/* Subtle Top Glow on Hover */}
+            <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#d4af37]/0 to-transparent group-hover:via-[#d4af37]/80 transition-all duration-300" />
+
             <div>
-              <div class="flex items-center justify-between gap-3 mb-4">
-                <div class="flex items-center gap-3">
-                  <div class={`w-11 h-11 rounded-xl bg-gradient-to-tr ${app.iconBg} flex items-center justify-center text-black shadow-md`}>
-                    <IconComponent class="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 class="text-lg font-bold text-white group-hover:text-[#f9e79f] transition">
-                      {app.title}
-                    </h3>
-                    <span class="text-xs font-mono text-[#71717a]">{app.route}</span>
-                  </div>
+              {/* Top Row: Category and Badge */}
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-mono uppercase tracking-wider font-bold text-[#d4af37] bg-[#d4af37]/10 px-2 py-0.5 rounded border border-[#d4af37]/20">
+                    {app.categoryLabel}
+                  </span>
+                  <span class="text-xs font-mono text-[#71717a]">{app.route}</span>
                 </div>
-                <span class={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full border ${app.badgeColor}`}>
+                <span class={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border ${app.badgeColor}`}>
                   {app.badge}
                 </span>
               </div>
 
-              <p class="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed mb-5">
+              {/* App Header with Icon and Title */}
+              <div class="flex items-center gap-3.5 mb-3">
+                <div class={`w-12 h-12 rounded-xl bg-gradient-to-tr ${app.iconBg} flex items-center justify-center text-black shadow-lg shadow-black/40 shrink-0 group-hover:scale-105 transition-transform duration-200`}>
+                  <IconComponent class="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white group-hover:text-[#f9e79f] transition-colors leading-snug">
+                    {app.title}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Description */}
+              <p class="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed mb-4">
                 {app.description}
               </p>
 
-              <div class="space-y-2 mb-6 pt-2 border-t border-[#ffffff10]">
+              {/* Tech Tags / Formats Chips */}
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                {app.techTags.map((tag) => (
+                  <span class="px-2 py-0.5 rounded-md bg-[#161824] border border-[#ffffff10] text-[10px] font-mono text-[#d4d4d8] group-hover:border-[#d4af37]/30 transition">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Highlights Checkpoints */}
+              <div class="space-y-2 mb-6 pt-3 border-t border-[#ffffff10]">
                 {app.highlights.map((item) => (
                   <div class="flex items-start gap-2 text-xs text-[#d4d4d8]">
                     <Check class="w-3.5 h-3.5 text-[#d4af37] shrink-0 mt-0.5" />
@@ -374,12 +503,13 @@ const SUB_APPS = [
               </div>
             </div>
 
+            {/* Action CTA Button */}
             <a
               href={app.route}
-              class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#1a1c22] group-hover:bg-[#d4af37] group-hover:text-black text-[#f9e79f] font-bold text-xs sm:text-sm transition cursor-pointer border border-[#d4af37]/30 group-hover:border-transparent shadow-sm text-decoration-none"
+              class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#181a24] group-hover:bg-gradient-to-r group-hover:from-[#d4af37] group-hover:to-[#e6be44] group-hover:text-black text-[#f9e79f] font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer border border-[#d4af37]/30 group-hover:border-transparent shadow-md group-hover:shadow-lg group-hover:shadow-[#d4af3720] text-decoration-none"
             >
               <span>{app.cta}</span>
-              <ArrowRight class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         );
@@ -388,7 +518,7 @@ const SUB_APPS = [
   </section>
 
   {/* Why Choose Us vs Traditional Paid Tools */}
-  <section class="px-4 sm:px-6 py-12 max-w-6xl mx-auto w-full border-t border-[#ffffff10]">
+  <section id="sobre" class="px-4 sm:px-6 py-12 max-w-6xl mx-auto w-full border-t border-[#ffffff10] scroll-mt-20">
     <div class="bg-gradient-to-b from-[#121418] to-[#0d0f12] border border-[#ffffff15] rounded-3xl p-6 sm:p-10">
       <div class="text-center max-w-2xl mx-auto mb-8">
         <span class="text-[11px] font-mono uppercase tracking-widest text-[#d4af37] font-bold">
@@ -437,7 +567,7 @@ const SUB_APPS = [
   </section>
 
   {/* FAQ Section */}
-  <section class="px-4 sm:px-6 py-12 max-w-4xl mx-auto w-full">
+  <section id="faq" class="px-4 sm:px-6 py-12 max-w-4xl mx-auto w-full scroll-mt-20">
     <div class="text-center mb-8">
       <span class="text-[11px] font-mono uppercase tracking-widest text-[#d4af37] font-bold">
         Tire Suas Dúvidas

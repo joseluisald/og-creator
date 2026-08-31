@@ -1,49 +1,147 @@
 ---
-import { Sparkles, Share2 } from 'lucide-astro';
+import {
+  Sparkles,
+  Share2,
+  Lock,
+  Search,
+  Smile,
+  ShieldCheck,
+  ArrowRightLeft,
+  Image as ImageIcon,
+  Code2,
+  ShieldAlert,
+  Bot,
+  ArrowUp,
+  Heart
+} from 'lucide-astro';
 ---
 
-<footer class="border-t border-[#ffffff10] bg-[#0c0d10] py-8 px-6 mt-auto text-xs text-[#71717a]">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-    <div class="flex items-center gap-2">
-      <div class="w-6 h-6 rounded-md bg-[#d4af37] flex items-center justify-center text-black font-bold text-xs">
-        <Sparkles class="w-3.5 h-3.5" />
+<footer class="border-t border-[#ffffff15] bg-[#08090c] pt-14 pb-8 px-4 sm:px-6 mt-auto text-xs text-[#71717a]">
+  <div class="max-w-7xl mx-auto flex flex-col gap-10">
+    {/* Main Multi-Column Grid */}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+      {/* Column 1: Brand & Philosophy */}
+      <div class="flex flex-col gap-3.5">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#d4af37] via-[#f9e79f] to-[#b38f28] flex items-center justify-center text-black font-bold shadow-md shadow-[#d4af3720]">
+            <Sparkles class="w-4 h-4 text-black" />
+          </div>
+          <span class="font-extrabold text-base text-white tracking-tight">
+            Web &amp; SEO <span class="text-[#d4af37]">Studio</span>
+          </span>
+        </div>
+        <p class="text-xs text-[#a1a1aa] leading-relaxed">
+          Suíte completa e profissional de utilitários para webmasters, agências e desenvolvedores. Gere e valide ativos essenciais sem cadastro ou assinaturas.
+        </p>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#14161f] border border-emerald-500/20 text-[11px] text-emerald-400 font-medium w-fit">
+          <Lock class="w-3.5 h-3.5" />
+          <span>Privacidade Total · Zero Armazenamento</span>
+        </div>
       </div>
-      <span class="font-semibold text-white">Web &amp; SEO Studio</span>
-      <span>— Suíte de Ferramentas Web Desenvolvida em Astro</span>
+
+      {/* Column 2: SEO & Indexação */}
+      <div class="flex flex-col gap-3">
+        <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-[#d4af37]">
+          SEO &amp; Indexação
+        </h4>
+        <ul class="space-y-2 list-none p-0 m-0">
+          <li>
+            <a href="/serp-simulator" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <Search class="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+              <span>Simulador SERP Google</span>
+              <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300">580px</span>
+            </a>
+          </li>
+          <li>
+            <a href="/meta-tags" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <Code2 class="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
+              <span>Meta Tags &amp; Schema JSON-LD</span>
+            </a>
+          </li>
+          <li>
+            <a href="/robots-sitemap" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <ShieldAlert class="w-3.5 h-3.5 text-rose-400 group-hover:scale-110 transition-transform" />
+              <span>Robots.txt &amp; Sitemap Shield</span>
+            </a>
+          </li>
+          <li>
+            <a href="/llms-txt" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <Bot class="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform" />
+              <span>llms.txt Studio para IA</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      {/* Column 3: Design, Performance & Segurança */}
+      <div class="flex flex-col gap-3">
+        <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-[#d4af37]">
+          Design &amp; Infraestrutura
+        </h4>
+        <ul class="space-y-2 list-none p-0 m-0">
+          <li>
+            <a href="/favicon-studio" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <Smile class="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <span>Favicon &amp; Web Manifest PWA</span>
+            </a>
+          </li>
+          <li>
+            <a href="/security-headers" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <ShieldCheck class="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
+              <span>Headers HTTP de Segurança (CSP)</span>
+            </a>
+          </li>
+          <li>
+            <a href="/redirects-generator" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <ArrowRightLeft class="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+              <span>Gerador de Redirecionamentos 301</span>
+            </a>
+          </li>
+          <li>
+            <a href="/og-studio" class="flex items-center gap-2 text-[#a1a1aa] hover:text-white transition text-decoration-none group">
+              <ImageIcon class="w-3.5 h-3.5 text-yellow-400 group-hover:scale-110 transition-transform" />
+              <span>OG Image Studio 1200×630</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      {/* Column 4: Quick Share & Status */}
+      <div class="flex flex-col gap-3.5 bg-[#12141a]/60 border border-[#ffffff10] p-4 rounded-2xl">
+        <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-white">
+          Acesso Instantâneo
+        </h4>
+        <p class="text-xs text-[#a1a1aa] leading-relaxed">
+          Compartilhe a suíte com seu time de desenvolvedores e criadores.
+        </p>
+        <button
+          type="button"
+          id="share-button-footer"
+          class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#e6be44] hover:from-[#e6be44] hover:to-[#d4af37] text-black font-bold text-xs transition cursor-pointer shadow-md shadow-[#d4af3720]"
+        >
+          <Share2 class="w-3.5 h-3.5 text-black" />
+          <span>Compartilhar Suíte</span>
+        </button>
+      </div>
     </div>
 
-    <div class="flex items-center gap-4 flex-wrap">
-      <a href="/serp-simulator" class="text-amber-400 hover:text-white transition cursor-pointer text-decoration-none font-medium">
-        Simulador SERP
-      </a>
-      <a href="/favicon-studio" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
-        Favicon &amp; PWA
-      </a>
-      <a href="/security-headers" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
-        Headers HTTP
-      </a>
-      <a href="/redirects-generator" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
-        Redirecionamentos (.htaccess/Nginx)
-      </a>
-      <a href="/og-studio" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
-        OG Studio
-      </a>
-      <a href="/meta-tags" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
-        Meta Tags
-      </a>
-      <a href="/robots-sitemap" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
-        Robots &amp; Sitemap
-      </a>
-      <a href="/llms-txt" class="hover:text-white transition cursor-pointer text-decoration-none text-[#71717a]">
-        llms.txt Studio
-      </a>
+    {/* Bottom Copyright and Navigation Bar */}
+    <div class="pt-6 border-t border-[#ffffff10] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <div class="flex items-center gap-2 text-[#71717a] flex-wrap">
+        <span>© {new Date().getFullYear()} Web &amp; SEO Studio</span>
+        <span>•</span>
+        <span>Construído com Astro &amp; React</span>
+        <span>•</span>
+        <span class="text-emerald-400 font-medium">100% Gratuito</span>
+      </div>
+
       <button
         type="button"
-        id="share-button-footer"
-        class="text-[#d4af37] hover:underline flex items-center gap-1 cursor-pointer font-semibold bg-transparent border-0"
+        id="back-to-top-btn"
+        class="inline-flex items-center gap-1.5 text-[#a1a1aa] hover:text-[#f9e79f] transition cursor-pointer bg-transparent border-0 text-xs font-medium"
       >
-        <Share2 class="w-3 h-3" />
-        <span>Compartilhar</span>
+        <span>Voltar ao topo</span>
+        <ArrowUp class="w-3.5 h-3.5" />
       </button>
     </div>
   </div>
@@ -56,13 +154,20 @@ import { Sparkles, Share2 } from 'lucide-astro';
       if (navigator.share) {
         navigator.share({
           title: 'Web & SEO Studio - Suíte Grátis para Webmasters',
-          text: 'Gere imagens OG, Meta Tags, Robots.txt e llms.txt gratuitamente!',
+          text: 'Simulador SERP, Favicons PWA, Headers de Segurança, Redirecionamentos, Imagens OG e Meta Tags!',
           url: window.location.origin,
         }).catch(() => {});
       } else {
         navigator.clipboard.writeText(window.location.origin);
         alert('Link copiado para a área de transferência!');
       }
+    });
+  }
+
+  const backToTopBtn = document.getElementById('back-to-top-btn');
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 </script>

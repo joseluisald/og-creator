@@ -284,6 +284,12 @@ export interface FaviconConfig {
   borderColor: string;
   shadowBlur: number;
   shadowColor: string;
+  scale: number; // 20 to 250% (redimensionamento / zoom do elemento)
+  offsetX: number; // -50 to +50% de deslocamento horizontal
+  offsetY: number; // -50 to +50% de deslocamento vertical
+  rotation: number; // -180 to +180 graus
+  imageFit: 'contain' | 'cover' | 'fill';
+  opacity?: number; // 0 to 100
 }
 
 export interface WebManifestConfig {
